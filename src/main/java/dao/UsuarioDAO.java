@@ -100,4 +100,28 @@ public class UsuarioDAO {
         }
         return deleted;
     }
+    public Usuario login(String email, String password) {
+        String query = "SELECT * FROM Usuario WHERE email = ? AND password = ?";
+        try (Connection conn = ConnectionBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, email);
+            stmt.setString(2, password);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    Usuario usuario = new Usuario();
+                    usuario.setIdUsuario(rs.getInt("id_usuario"));
+                    usuario.setNombre(rs.getString("nombre"));
+                    usuario.setEmail(rs.getString("email"));
+                    // Otros campos si es necesario
+                    return usuario;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

@@ -11,7 +11,7 @@ public class TestConsulta {
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery("SELECT * FROM Usuario")) {
 
-            System.out.println("📋 Lista de usuarios:");
+            System.out.println("Lista de usuarios:");
             while (rs.next()) {
                 int id = rs.getInt("id_usuario");
                 String nombre = rs.getString("nombre");
@@ -21,7 +21,7 @@ public class TestConsulta {
             }
 
         } catch (Exception e) {
-            System.out.println("❌ Error al consultar los usuarios:");
+            System.out.println(" Error al consultar los usuarios:");
             e.printStackTrace();
         }
     }
