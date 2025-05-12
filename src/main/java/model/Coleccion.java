@@ -57,4 +57,19 @@ public class Coleccion {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+    public int getIdUsuario() {
+        if (usuario != null) {
+            return usuario.getIdUsuario();
+        }
+        return 0; // O manejar el caso donde usuario es null
+    }
+
+    public void setIdUsuario(int idUsuario) {
+        if (usuario != null) {
+            usuario.setIdUsuario(idUsuario);
+        } else {
+            usuario = new Usuario();
+            usuario.setIdUsuario(idUsuario);
+        }
+    }
 }

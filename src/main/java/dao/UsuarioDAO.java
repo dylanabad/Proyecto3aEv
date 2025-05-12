@@ -1,4 +1,103 @@
 package dao;
 
+import dataBase.ConnectionBD;
+import model.Usuario;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
 public class UsuarioDAO {
+    private final static String SQL_ALL = "SELECT * FROM Usuario";
+    private final static String SQL_FIND_BY_ID = "SELECT * FROM Usuario WHERE id_usuario = ?";
+    private final static String SQL_INSERT = "INSERT INTO Usuario (nombre, email, contraseña) VALUES(?, ?, ?)";
+    private final static String SQL_UPDATE = "UPDATE Usuario SET nombre = ?, email = ?, contraseña = ? WHERE id_usuario = ?";
+    private final static String SQL_DELETE = "DELETE FROM Usuario WHERE id_usuario = ?";
+
+    public static List<Usuario> findAll() {
+        List<Usuario> usuarios = new ArrayList<>();
+        try (Connection con = ConnectionBD.getConnection();
+             Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(SQL_ALL)) {
+            while (rs.next()) {
+                Usuario usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setContrasena(rs.getString("contraseña"));
+                usuarios.add(usuario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuarios;
+    }
+
+    public static Usuario findById(int idUsuario) {
+        Usuario usuario = null;
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement pst = con.prepareStatement(SQL_FIND_BY_ID)) {
+            pst.setInt(1, idUsuario);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                usuario = new Usuario();
+                usuario.setIdUsuario(rs.getInt("id_usuario"));
+                usuario.setNombre(rs.getString("nombre"));
+                usuario.setEmail(rs.getString("email"));
+                usuario.setContrasena(rs.getString("contraseña"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return usuario;
+    }
+
+    public static Usuario insertUsuario(Usuario usuario) {
+        if (usuario != null) {
+            try (Connection con = ConnectionBD.getConnection();
+                 PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+                pst.setString(1, usuario.getNombre());
+                pst.setString(2, usuario.getEmail());
+                pst.setString(3, usuario.getContrasena());
+                pst.executeUpdate();
+                ResultSet rs = pst.getGeneratedKeys();
+                if (rs.next()) {
+                    usuario.setIdUsuario(rs.getInt(1));
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                usuario = null;
+            }
+        }
+        return usuario;
+    }
+
+    public static boolean updateUsuario(Usuario usuario) {
+        boolean updated = false;
+        if (usuario != null) {
+            try (Connection con = ConnectionBD.getConnection();
+                 PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
+                pst.setString(1, usuario.getNombre());
+                pst.setString(2, usuario.getEmail());
+                pst.setString(3, usuario.getContrasena());
+                pst.setInt(4, usuario.getIdUsuario());
+                updated = pst.executeUpdate() > 0;
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return updated;
+    }
+
+    public static boolean deleteUsuario(int idUsuario) {
+        boolean deleted = false;
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement pst = con.prepareStatement(SQL_DELETE)) {
+            pst.setInt(1, idUsuario);
+            deleted = pst.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return deleted;
+    }
 }

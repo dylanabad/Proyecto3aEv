@@ -28,4 +28,26 @@ public class ItemEtiqueta {
     public void setEtiqueta(Etiqueta etiqueta) {
         this.etiqueta = etiqueta;
     }
+
+    public int getItemId() {
+        return item != null ? item.getIdItem() : 0;
+    }
+
+    public void setItemId(int idItem) {
+        if (item == null) {
+            item = new Item();
+        }
+        item.setIdItem(idItem);
+    }
+
+    public int getEtiquetaId() {
+        return etiqueta != null ? etiqueta.getIdEtiqueta() : 0;
+    }
+
+    public void setEtiquetaId(int idEtiqueta) {
+        if (etiqueta == null) {
+            etiqueta = new Etiqueta();
+        }
+        etiqueta.setIdEtiqueta(idEtiqueta);
+    }
 }

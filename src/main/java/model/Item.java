@@ -11,7 +11,8 @@ public class Item {
     private Coleccion coleccion;
 
     // Constructor vacío
-    public Item() {}
+    public Item() {
+    }
 
     public Item(int idItem, String descripcion, String estado, Date fechaAdquisicion, double precio, Coleccion coleccion) {
         this.idItem = idItem;
@@ -68,5 +69,27 @@ public class Item {
 
     public void setColeccion(Coleccion coleccion) {
         this.coleccion = coleccion;
+    }
+
+    public String getNombre() {
+        return coleccion != null ? coleccion.getNombre() : null;
+    }
+
+    public void setNombre(String nombre) {
+        if (coleccion == null) {
+            coleccion = new Coleccion();
+        }
+        coleccion.setNombre(nombre);
+    }
+
+    public int getIdColeccion() {
+        return coleccion != null ? coleccion.getIdColeccion() : 0;
+    }
+
+    public void setIdColeccion(int idColeccion) {
+        if (coleccion == null) {
+            coleccion = new Coleccion();
+        }
+        coleccion.setIdColeccion(idColeccion);
     }
 }
