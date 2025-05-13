@@ -1,11 +1,19 @@
 package model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class Coleccion {
     private int idColeccion;
     private String nombre;
     private String descripcion;
     private String categoria;
     private Usuario usuario;
+
+    // Propiedades adicionales para compatibilidad con TableView
+    private final StringProperty nombreProperty = new SimpleStringProperty();
+    private final StringProperty categoriaProperty = new SimpleStringProperty();
+    private final StringProperty descripcionProperty = new SimpleStringProperty();
 
     // Constructor vacío
     public Coleccion() {}
@@ -16,8 +24,14 @@ public class Coleccion {
         this.descripcion = descripcion;
         this.categoria = categoria;
         this.usuario = usuario;
+
+        // Inicializar propiedades
+        this.nombreProperty.set(nombre);
+        this.categoriaProperty.set(categoria);
+        this.descripcionProperty.set(descripcion);
     }
 
+    // Getters y setters existentes
     public int getIdColeccion() {
         return idColeccion;
     }
@@ -32,6 +46,7 @@ public class Coleccion {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+        this.nombreProperty.set(nombre); // Sincronizar propiedad
     }
 
     public String getDescripcion() {
@@ -40,6 +55,7 @@ public class Coleccion {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
+        this.descripcionProperty.set(descripcion); // Sincronizar propiedad
     }
 
     public String getCategoria() {
@@ -48,6 +64,7 @@ public class Coleccion {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+        this.categoriaProperty.set(categoria); // Sincronizar propiedad
     }
 
     public Usuario getUsuario() {
@@ -57,6 +74,7 @@ public class Coleccion {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
     public int getIdUsuario() {
         if (usuario != null) {
             return usuario.getIdUsuario();
@@ -71,5 +89,18 @@ public class Coleccion {
             usuario = new Usuario();
             usuario.setIdUsuario(idUsuario);
         }
+    }
+
+    // Métodos para TableView
+    public StringProperty nombreProperty() {
+        return nombreProperty;
+    }
+
+    public StringProperty categoriaProperty() {
+        return categoriaProperty;
+    }
+
+    public StringProperty descripcionProperty() {
+        return descripcionProperty;
     }
 }

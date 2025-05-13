@@ -34,24 +34,26 @@ public class ColeccionDAO {
         return colecciones;
     }
 
-    public static Coleccion findById(int idColeccion) {
-        Coleccion coleccion = null;
+    public List<Coleccion> findByUsuarioId(int idUsuario) {
+        List<Coleccion> colecciones = new ArrayList<>();
+        String sql = "SELECT * FROM Coleccion WHERE id_usuario = ?";
         try (Connection con = ConnectionBD.getConnection();
-             PreparedStatement pst = con.prepareStatement(SQL_FIND_BY_ID)) {
-            pst.setInt(1, idColeccion);
+             PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setInt(1, idUsuario);
             ResultSet rs = pst.executeQuery();
-            if (rs.next()) {
-                coleccion = new Coleccion();
+            while (rs.next()) {
+                Coleccion coleccion = new Coleccion();
                 coleccion.setIdColeccion(rs.getInt("id_coleccion"));
                 coleccion.setNombre(rs.getString("nombre"));
                 coleccion.setDescripcion(rs.getString("descripcion"));
                 coleccion.setCategoria(rs.getString("categoria"));
                 coleccion.setIdUsuario(rs.getInt("id_usuario"));
+                colecciones.add(coleccion);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return coleccion;
+        return colecciones;
     }
 
     public static Coleccion insertColeccion(Coleccion coleccion) {
@@ -103,5 +105,7 @@ public class ColeccionDAO {
             e.printStackTrace();
         }
         return deleted;
+
+
     }
 }
