@@ -1,8 +1,9 @@
-package org.example.proyecto3aev;
+package controller;
 
 import dao.ColeccionDAO;
 import dao.ItemDAO;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -77,8 +78,8 @@ public class MainController {
     private void handleAddItem() {
         Item nuevoItem = mostrarDialogoItem(null);
         if (nuevoItem != null) {
-            items.add(nuevoItem);
-            itemDAO.save(nuevoItem);
+            itemDAO.save(nuevoItem); // Guarda el ítem en la base de datos
+            items.add(nuevoItem); // Añade el ítem a la lista observable
         }
     }
 
@@ -104,7 +105,24 @@ public class MainController {
     }
 
     private Item mostrarDialogoItem(Item item) {
-        // Implementar un diálogo para agregar/editar ítems
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/itemDialog.fxml"));
+            DialogPane dialogPane = loader.load();
+
+            ItemDialogController controller = loader.getController();
+            controller.setItem(item);
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setDialogPane(dialogPane);
+            dialog.setTitle(item == null ? "Agregar Ítem" : "Editar Ítem");
+
+            ButtonType result = dialog.showAndWait().orElse(ButtonType.CANCEL);
+            if (result == ButtonType.OK) {
+                return controller.getItem();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }

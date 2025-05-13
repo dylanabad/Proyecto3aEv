@@ -7,4 +7,6 @@ module org.example.proyecto3aev {
 
     opens org.example.proyecto3aev to javafx.fxml;
     exports org.example.proyecto3aev;
+    exports controller;
+    opens controller to javafx.fxml;
 }

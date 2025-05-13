@@ -1,4 +1,4 @@
-package org.example.proyecto3aev;
+package controller;
 
 import dao.UsuarioDAO;
 import javafx.fxml.FXML;

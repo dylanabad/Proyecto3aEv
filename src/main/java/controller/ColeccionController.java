@@ -1,4 +1,4 @@
-package org.example.proyecto3aev;
+package controller;
 
 public class ColeccionController {
 }

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<DialogPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.ItemDialogController">
+    <content>
+        <VBox spacing="10">
+            <Label text="Nombre:"/>
+            <TextField fx:id="nombreField"/>
+
+            <Label text="Descripción:"/>
+            <TextField fx:id="descripcionField"/>
+
+            <Label text="Estado:"/>
+            <ChoiceBox fx:id="estadoChoiceBox">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Nuevo"/>
+                        <String fx:value="Usado"/>
+                    </FXCollections>
+                </items>
+            </ChoiceBox>
+
+            <Label text="Fecha de Adquisición:"/>
+            <DatePicker fx:id="fechaAdquisicionPicker"/>
+
+            <Label text="Precio:"/>
+            <TextField fx:id="precioField"/>
+        </VBox>
+    </content>
+    <buttonTypes>
+        <ButtonType text="Aceptar" buttonData="OK_DONE"/>
+        <ButtonType text="Cancelar" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+</DialogPane>
