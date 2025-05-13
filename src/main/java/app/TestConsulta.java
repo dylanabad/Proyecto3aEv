@@ -24,5 +24,7 @@ public class TestConsulta {
             System.out.println(" Error al consultar los usuarios:");
             e.printStackTrace();
         }
+
+
     }
 }
