@@ -1,5 +1,6 @@
 package model;
-
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import java.util.Date;
 
 public class Item {
@@ -92,4 +93,16 @@ public class Item {
         }
         coleccion.setIdColeccion(idColeccion);
     }
+
+    // Métodos añadidos para que funcione con las tablas en MainController
+        public StringProperty nombreProperty() {
+            return new SimpleStringProperty(getNombre());
+        }
+
+        public StringProperty descripcionProperty() {
+            return new SimpleStringProperty(getDescripcion());
+        }
+
+
+
 }

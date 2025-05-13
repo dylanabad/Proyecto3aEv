@@ -112,4 +112,25 @@ public class ItemDAO {
         }
         return deleted;
     }
+
+    // Método para obtener ítems por ID de colección
+    public List<Item> findByColeccionId(int idColeccion) {
+        // Implementación simulada (debes reemplazarla con lógica de base de datos)
+        return new ArrayList<>();
+    }
+
+    // Método para guardar un nuevo ítem
+    public void save(Item item) {
+        // Implementación simulada (debes reemplazarla con lógica de base de datos)
+    }
+
+    // Método para actualizar un ítem existente
+    public void update(Item item) {
+        // Implementación simulada (debes reemplazarla con lógica de base de datos)
+    }
+
+    // Método para eliminar un ítem por su ID
+    public void delete(int idItem) {
+        // Implementación simulada (debes reemplazarla con lógica de base de datos)
+    }
 }
