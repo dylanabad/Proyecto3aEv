@@ -106,6 +106,44 @@ public class ColeccionDAO {
         }
         return deleted;
 
+    }
 
+    public void save(Coleccion coleccion) {
+        String sql = "INSERT INTO colecciones (nombre, categoria, descripcion, id_usuario) VALUES (?, ?, ?, ?)";
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, coleccion.getNombre());
+            stmt.setString(2, coleccion.getCategoria());
+            stmt.setString(3, coleccion.getDescripcion());
+            stmt.setInt(4, coleccion.getIdUsuario());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void update(Coleccion coleccion) {
+        String sql = "UPDATE colecciones SET nombre = ?, categoria = ?, descripcion = ? WHERE id_coleccion = ?";
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setString(1, coleccion.getNombre());
+            stmt.setString(2, coleccion.getCategoria());
+            stmt.setString(3, coleccion.getDescripcion());
+            stmt.setInt(4, coleccion.getIdColeccion());
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void delete(int idColeccion) {
+        String sql = "DELETE FROM colecciones WHERE id_coleccion = ?";
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement stmt = con.prepareStatement(sql)) {
+            stmt.setInt(1, idColeccion);
+            stmt.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

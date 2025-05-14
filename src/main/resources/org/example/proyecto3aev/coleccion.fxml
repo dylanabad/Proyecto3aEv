@@ -1,14 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<DialogPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.proyecto3aev.Coleccion"
-            prefHeight="400.0" prefWidth="600.0">
+            fx:controller="controller.ColeccionController">
+    <content>
+        <GridPane hgap="10" vgap="10">
+            <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="nombreField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-</AnchorPane>
+            <Label text="Categoría:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="categoriaField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Descripción:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="descripcionField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        </GridPane>
+    </content>
+    <buttonTypes>
+        <ButtonType text="Aceptar" buttonData="OK_DONE"/>
+        <ButtonType text="Cancelar" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+</DialogPane>

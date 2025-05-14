@@ -10,13 +10,20 @@
         <Label fx:id="welcomeLabel" text="Bienvenido" style="-fx-font-size: 16px; -fx-padding: 10px;"/>
     </top>
     <center>
-        <TableView fx:id="coleccionesTable" prefHeight="250">
-            <columns>
-                <TableColumn fx:id="nombreCol" text="Nombre"/>
-                <TableColumn fx:id="categoriaCol" text="Categoría"/>
-                <TableColumn fx:id="descripcionCol" text="Descripción"/>
-            </columns>
-        </TableView>
+        <VBox spacing="10">
+            <TableView fx:id="coleccionesTable" prefHeight="250">
+                <columns>
+                    <TableColumn fx:id="nombreCol" text="Nombre"/>
+                    <TableColumn fx:id="categoriaCol" text="Categoría"/>
+                    <TableColumn fx:id="descripcionCol" text="Descripción"/>
+                </columns>
+            </TableView>
+            <HBox spacing="10">
+                <Button text="Agregar Colección" onAction="#handleAddColeccion"/>
+                <Button text="Editar Colección" onAction="#handleEditColeccion"/>
+                <Button text="Eliminar Colección" onAction="#handleDeleteColeccion"/>
+            </HBox>
+        </VBox>
     </center>
     <bottom>
         <VBox spacing="10" style="-fx-padding: 10px;">

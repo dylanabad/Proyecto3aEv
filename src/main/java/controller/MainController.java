@@ -117,6 +117,70 @@ public class MainController {
         }
     }
 
+    @FXML
+    private void handleAddColeccion() {
+        Coleccion nuevaColeccion = mostrarDialogoColeccion(null);
+        if (nuevaColeccion != null) {
+            coleccionDAO.save(nuevaColeccion); // Guarda la colección en la base de datos
+            coleccionesTable.getItems().add(nuevaColeccion); // Añade la colección a la tabla
+        }
+    }
+
+    @FXML
+    private void handleEditColeccion() {
+        Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
+        if (coleccionSeleccionada != null) {
+            Coleccion coleccionEditada = mostrarDialogoColeccion(coleccionSeleccionada);
+            if (coleccionEditada != null) {
+                coleccionDAO.update(coleccionEditada); // Actualiza la colección en la base de datos
+                coleccionesTable.refresh(); // Refresca la tabla
+            }
+        } else {
+            mostrarAlerta("Por favor, selecciona una colección para editar.");
+        }
+    }
+
+    @FXML
+    private void handleDeleteColeccion() {
+        Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
+        if (coleccionSeleccionada != null) {
+            coleccionesTable.getItems().remove(coleccionSeleccionada); // Elimina la colección de la tabla
+            coleccionDAO.delete(coleccionSeleccionada.getIdColeccion()); // Elimina la colección de la base de datos
+        } else {
+            mostrarAlerta("Por favor, selecciona una colección para eliminar.");
+        }
+    }
+
+    private Coleccion mostrarDialogoColeccion(Coleccion coleccion) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/coleccionDialog.fxml"));
+            DialogPane dialogPane = loader.load();
+
+            ColeccionController controller = loader.getController();
+            controller.setColeccion(coleccion);
+
+            Dialog<ButtonType> dialog = new Dialog<>();
+            dialog.setDialogPane(dialogPane);
+            dialog.setTitle(coleccion == null ? "Agregar Colección" : "Editar Colección");
+
+            ButtonType result = dialog.showAndWait().orElse(ButtonType.CANCEL);
+            if (result == ButtonType.OK) {
+                return controller.getColeccion();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private void mostrarAlerta(String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.WARNING);
+        alerta.setTitle("Advertencia");
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
     private Item mostrarDialogoItem(Item item) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/itemDialog.fxml"));
