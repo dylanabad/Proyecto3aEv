@@ -52,24 +52,17 @@ public class UsuarioDAO {
         return usuario;
     }
 
-    public static Usuario insertUsuario(Usuario usuario) {
-        if (usuario != null) {
-            try (Connection con = ConnectionBD.getConnection();
-                 PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
-                pst.setString(1, usuario.getNombre());
-                pst.setString(2, usuario.getEmail());
-                pst.setString(3, usuario.getContrasena());
-                pst.executeUpdate();
-                ResultSet rs = pst.getGeneratedKeys();
-                if (rs.next()) {
-                    usuario.setIdUsuario(rs.getInt(1));
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-                usuario = null;
-            }
+    public static boolean insertUsuario(Usuario usuario) {
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement pst = con.prepareStatement(SQL_INSERT)) {
+            pst.setString(1, usuario.getNombre());
+            pst.setString(2, usuario.getEmail());
+            pst.setString(3, usuario.getContrasena());
+            return pst.executeUpdate() > 0; // Devuelve true si se insertó al menos una fila
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false; // Devuelve false en caso de error
         }
-        return usuario;
     }
 
     public static boolean updateUsuario(Usuario usuario) {
