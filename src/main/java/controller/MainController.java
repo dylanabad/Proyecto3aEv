@@ -121,8 +121,8 @@ public class MainController {
     private void handleAddColeccion() {
         Coleccion nuevaColeccion = mostrarDialogoColeccion(null);
         if (nuevaColeccion != null) {
-            coleccionDAO.save(nuevaColeccion); // Guarda la colección en la base de datos
-            coleccionesTable.getItems().add(nuevaColeccion); // Añade la colección a la tabla
+            coleccionDAO.save(nuevaColeccion);
+            coleccionesTable.getItems().add(nuevaColeccion);
         }
     }
 
@@ -132,8 +132,8 @@ public class MainController {
         if (coleccionSeleccionada != null) {
             Coleccion coleccionEditada = mostrarDialogoColeccion(coleccionSeleccionada);
             if (coleccionEditada != null) {
-                coleccionDAO.update(coleccionEditada); // Actualiza la colección en la base de datos
-                coleccionesTable.refresh(); // Refresca la tabla
+                coleccionDAO.update(coleccionEditada);
+                coleccionesTable.refresh();
             }
         } else {
             mostrarAlerta("Por favor, selecciona una colección para editar.");
@@ -156,8 +156,8 @@ public class MainController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/coleccionDialog.fxml"));
             DialogPane dialogPane = loader.load();
 
-            ColeccionController controller = loader.getController();
-            controller.setColeccion(coleccion);
+            ColeccionDialogController dialogController = loader.getController();
+            dialogController.setColeccion(coleccion); // Configura la colección si no es null
 
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setDialogPane(dialogPane);
@@ -165,7 +165,7 @@ public class MainController {
 
             ButtonType result = dialog.showAndWait().orElse(ButtonType.CANCEL);
             if (result == ButtonType.OK) {
-                return controller.getColeccion();
+                return dialogController.getColeccion();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -187,7 +187,7 @@ public class MainController {
             DialogPane dialogPane = loader.load();
 
             ItemDialogController controller = loader.getController();
-            controller.setItem(item);
+            controller.setItem(item); // Configura el ítem si no es null
 
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setDialogPane(dialogPane);

@@ -1,14 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.example.proyecto3aev.Item"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
+            fx:controller="controller.ItemController">
+    <top>
+        <ToolBar>
+            <Button text="Agregar Item" onAction="#handleAgregarItem"/>
+            <Button text="Editar Item" onAction="#handleEditarItem"/>
+        </ToolBar>
+    </top>
+    <center>
+        <TableView fx:id="itemTable">
+            <columns>
+                <TableColumn text="Nombre" fx:id="nombreColumn"/>
+                <TableColumn text="Descripción" fx:id="descripcionColumn"/>
+            </columns>
+        </TableView>
+    </center>
+</BorderPane>

@@ -137,7 +137,7 @@ public class ColeccionDAO {
     }
 
     public void delete(int idColeccion) {
-        String sql = "DELETE FROM colecciones WHERE id_coleccion = ?";
+        String sql = "DELETE FROM coleccion WHERE id_coleccion = ?";
         try (Connection con = ConnectionBD.getConnection();
              PreparedStatement stmt = con.prepareStatement(sql)) {
             stmt.setInt(1, idColeccion);

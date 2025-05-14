@@ -1,30 +1,22 @@
 package app;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import dataBase.ConnectionBD;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 public class TestConsulta {
     public static void main(String[] args) {
-        try (Connection conn = ConnectionBD.getConnection();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery("SELECT * FROM Usuario")) {
-
-            System.out.println("Lista de usuarios:");
-            while (rs.next()) {
-                int id = rs.getInt("id_usuario");
-                String nombre = rs.getString("nombre");
-                String email = rs.getString("email");
-
-                System.out.println("- ID: " + id + ", Nombre: " + nombre + ", Email: " + email);
+        try (Connection conn = ConnectionBD.getConnection()) {
+            if (conn != null && !conn.isClosed()) {
+                System.out.println("✅ ¡Conexión exitosa a la base de datos!");
+            } else {
+                System.out.println("❌ La conexión está cerrada.");
             }
-
-        } catch (Exception e) {
-            System.out.println(" Error al consultar los usuarios:");
+        } catch (SQLException e) {
+            System.out.println("❌ Error al conectar con la base de datos:");
             e.printStackTrace();
         }
 
-
+        
     }
 }
