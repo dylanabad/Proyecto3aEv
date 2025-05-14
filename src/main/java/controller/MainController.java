@@ -11,6 +11,7 @@ import model.Coleccion;
 import model.Item;
 import model.Usuario;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class MainController {
@@ -33,6 +34,14 @@ public class MainController {
     private TableColumn<Item, String> nombreItemCol;
     @FXML
     private TableColumn<Item, String> descripcionItemCol;
+    @FXML
+    private TableColumn<Item, String> estadoColumn;
+    @FXML
+    private TableColumn<Item, LocalDate> fechaAdquisicionColumn;
+    @FXML
+    private TableColumn<Item, Double> precioColumn;
+    @FXML
+    private TableColumn<Item, Integer> idColeccionColumn;
 
     private Usuario usuario;
     private ColeccionDAO coleccionDAO = new ColeccionDAO();
@@ -59,6 +68,10 @@ public class MainController {
         // Configurar columnas de ítems
         nombreItemCol.setCellValueFactory(cellData -> cellData.getValue().nombreProperty());
         descripcionItemCol.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
+        estadoColumn.setCellValueFactory(cellData -> cellData.getValue().estadoProperty());
+        fechaAdquisicionColumn.setCellValueFactory(cellData -> cellData.getValue().fechaAdquisicionProperty());
+        precioColumn.setCellValueFactory(cellData -> cellData.getValue().precioProperty().asObject());
+        idColeccionColumn.setCellValueFactory(cellData -> cellData.getValue().idColeccionProperty().asObject());
 
         // Detectar selección de colección
         coleccionesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {

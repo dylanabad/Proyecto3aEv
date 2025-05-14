@@ -24,6 +24,10 @@
                 <columns>
                     <TableColumn fx:id="nombreItemCol" text="Nombre"/>
                     <TableColumn fx:id="descripcionItemCol" text="Descripción"/>
+                    <TableColumn fx:id="estadoColumn" text="Estado" />
+                    <TableColumn fx:id="fechaAdquisicionColumn" text="Fecha de Adquisición" />
+                    <TableColumn fx:id="precioColumn" text="Precio" />
+                    <TableColumn fx:id="idColeccionColumn" text="ID Colección" />
                 </columns>
             </TableView>
             <HBox spacing="10">
