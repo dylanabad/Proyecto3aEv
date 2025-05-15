@@ -10,9 +10,11 @@ import javafx.collections.ObservableList;
 import model.Coleccion;
 import model.Item;
 import model.Usuario;
+import javafx.scene.layout.GridPane;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public class MainController {
 
@@ -49,11 +51,17 @@ public class MainController {
 
     private ObservableList<Item> items = FXCollections.observableArrayList();
 
+    private Usuario usuarioActivo;
+
+    public void setUsuarioActivo(Usuario usuario) {
+        this.usuarioActivo = usuario;
+    }
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+        this.usuarioActivo = usuario;
         welcomeLabel.setText("Bienvenido, " + usuario.getNombre());
 
-        // Cargar colecciones
         List<Coleccion> lista = coleccionDAO.findByUsuarioId(usuario.getIdUsuario());
         ObservableList<Coleccion> colecciones = FXCollections.observableArrayList(lista);
         coleccionesTable.setItems(colecciones);
@@ -62,6 +70,8 @@ public class MainController {
         categoriaCol.setCellValueFactory(cellData -> cellData.getValue().categoriaProperty());
         descripcionCol.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
     }
+
+
 
     @FXML
     private void initialize() {
@@ -119,22 +129,61 @@ public class MainController {
 
     @FXML
     private void handleAddColeccion() {
-        // Mostrar el diálogo para agregar una nueva colección
-        Coleccion nuevaColeccion = mostrarDialogoColeccion(null);
+        Dialog<Coleccion> dialog = new Dialog<>();
+        dialog.setTitle("Agregar Colección");
 
-        // Verificar si se creó una nueva colección
-        if (nuevaColeccion != null) {
-            // Guardar la colección en la base de datos
-            boolean guardado = coleccionDAO.save(nuevaColeccion);
+        ButtonType guardarButtonType = new ButtonType("Guardar", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(guardarButtonType, ButtonType.CANCEL);
 
-            // Si se guardó correctamente, agregarla a la tabla
-            if (guardado) {
-                coleccionesTable.getItems().add(nuevaColeccion);
-            } else {
-                mostrarAlerta("Error al guardar la colección en la base de datos.");
+        GridPane grid = new GridPane();
+        TextField nombreField = new TextField();
+        TextField categoriaField = new TextField();
+        TextArea descripcionArea = new TextArea();
+
+        grid.setVgap(10);
+        grid.setHgap(10);
+        grid.add(new Label("Nombre:"), 0, 0);
+        grid.add(nombreField, 1, 0);
+        grid.add(new Label("Categoría:"), 0, 1);
+        grid.add(categoriaField, 1, 1);
+        grid.add(new Label("Descripción:"), 0, 2);
+        grid.add(descripcionArea, 1, 2);
+
+        dialog.getDialogPane().setContent(grid);
+
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == guardarButtonType) {
+                Coleccion nueva = new Coleccion();
+                nueva.setNombre(nombreField.getText());
+                nueva.setCategoria(categoriaField.getText());
+                nueva.setDescripcion(descripcionArea.getText());
+
+                // 🔍 VERIFICACIÓN CRÍTICA
+                if (usuarioActivo == null) {
+                    System.out.println("⚠️ usuarioActivo es NULL. No se puede guardar la colección.");
+                } else {
+                    System.out.println("✅ usuarioActivo: " + usuarioActivo.getNombre());
+                    System.out.println("🆔 ID usuario: " + usuarioActivo.getIdUsuario());
+                    nueva.setUsuario(usuarioActivo);
+                }
+
+                return nueva;
             }
-        }
+            return null;
+        });
+
+        Optional<Coleccion> result = dialog.showAndWait();
+
+        result.ifPresent(coleccion -> {
+            System.out.println("Intentando insertar colección: " + coleccion.getNombre());
+            coleccionDAO.insertar(coleccion); // Asegúrate de que este método también tenga prints
+
+            // 🔄 Verificamos si carga correctamente después
+            cargarColecciones();
+        });
     }
+
+
 
     @FXML
     private void handleEditColeccion() {
@@ -142,8 +191,8 @@ public class MainController {
         if (coleccionSeleccionada != null) {
             Coleccion coleccionEditada = mostrarDialogoColeccion(coleccionSeleccionada);
             if (coleccionEditada != null) {
-                coleccionDAO.update(coleccionEditada);
-                coleccionesTable.refresh();
+                coleccionDAO.updateColeccion(coleccionEditada);
+                cargarColecciones();
             }
         } else {
             mostrarAlerta("Por favor, selecciona una colección para editar.");
@@ -160,6 +209,12 @@ public class MainController {
             mostrarAlerta("Por favor, selecciona una colección para eliminar.");
         }
     }
+
+    private void cargarColecciones() {
+        List<Coleccion> colecciones = coleccionDAO.findByUsuarioId(usuarioActivo.getIdUsuario());
+        coleccionesTable.setItems(FXCollections.observableArrayList(colecciones));
+    }
+
 
     private Coleccion mostrarDialogoColeccion(Coleccion coleccion) {
         try {

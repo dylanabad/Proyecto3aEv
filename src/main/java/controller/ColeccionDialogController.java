@@ -30,7 +30,7 @@ public class ColeccionDialogController {
             coleccion = new Coleccion();
         }
         coleccion.setNombre(nombreField.getText());
-        coleccion.setCategoria(nombreField.getText());
+        coleccion.setCategoria(categoriaField.getText());
         coleccion.setDescripcion(descripcionField.getText());
         return coleccion;
     }

@@ -29,28 +29,26 @@ public class LoginController {
         Usuario usuario = usuarioDAO.login(email, password);
         if (usuario != null) {
             try {
-                // Cargar la vista del MainController
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/main.fxml"));
                 Parent root = loader.load();
 
-                // Pasar el usuario al MainController
+                // Pasar usuario al controlador
                 MainController mainController = loader.getController();
                 mainController.setUsuario(usuario);
 
-                // Cambiar la escena
                 Stage stage = (Stage) emailField.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.show();
 
-                showAlert("Login correcto", "Bienvenido, " + usuario.getNombre(), Alert.AlertType.INFORMATION);
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert("Error", "No se pudo cargar la vista principal.", Alert.AlertType.ERROR);
             }
+
         } else {
             showAlert("Login fallido", "Credenciales incorrectas", Alert.AlertType.ERROR);
         }
     }
+
 
     private void showAlert(String title, String msg, Alert.AlertType type) {
         Alert alert = new Alert(type);
