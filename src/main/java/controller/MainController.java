@@ -119,10 +119,20 @@ public class MainController {
 
     @FXML
     private void handleAddColeccion() {
+        // Mostrar el diálogo para agregar una nueva colección
         Coleccion nuevaColeccion = mostrarDialogoColeccion(null);
+
+        // Verificar si se creó una nueva colección
         if (nuevaColeccion != null) {
-            coleccionDAO.save(nuevaColeccion);
-            coleccionesTable.getItems().add(nuevaColeccion);
+            // Guardar la colección en la base de datos
+            boolean guardado = coleccionDAO.save(nuevaColeccion);
+
+            // Si se guardó correctamente, agregarla a la tabla
+            if (guardado) {
+                coleccionesTable.getItems().add(nuevaColeccion);
+            } else {
+                mostrarAlerta("Error al guardar la colección en la base de datos.");
+            }
         }
     }
 

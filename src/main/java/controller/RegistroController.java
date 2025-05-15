@@ -71,4 +71,17 @@ public class RegistroController {
         alerta.setContentText(mensaje);
         alerta.showAndWait();
     }
+
+    @FXML
+    private void goToLogin() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/login.fxml"));
+            Scene loginScene = new Scene(loader.load());
+            Stage stage = (Stage) nombreField.getScene().getWindow(); // Obtiene la ventana actual
+            stage.setScene(loginScene);
+            stage.setTitle("Gestor de Colecciones - Login");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
