@@ -22,13 +22,17 @@ public class ColeccionDialogController {
             nombreField.setText(coleccion.getNombre());
             categoriaField.setText(coleccion.getCategoria());
             descripcionField.setText(coleccion.getDescripcion());
+        } else {
+            this.coleccion = new Coleccion();
         }
     }
 
     public Coleccion getColeccion() {
-        if (coleccion == null) {
-            coleccion = new Coleccion();
-        }
+        System.out.println("Obteniendo colección editada");
+        System.out.println("Nombre: " + nombreField.getText());
+        System.out.println("Categoría: " + categoriaField.getText());
+        System.out.println("Descripción: " + descripcionField.getText());
+
         coleccion.setNombre(nombreField.getText());
         coleccion.setCategoria(categoriaField.getText());
         coleccion.setDescripcion(descripcionField.getText());

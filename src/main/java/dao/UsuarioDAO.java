@@ -94,7 +94,7 @@ public class UsuarioDAO {
         return deleted;
     }
     public Usuario login(String email, String password) {
-        String query = "SELECT * FROM Usuario WHERE email = ? AND contraseña = ?";
+        String query = "SELECT * FROM usuario WHERE email = ? AND contraseña = ?";
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
 

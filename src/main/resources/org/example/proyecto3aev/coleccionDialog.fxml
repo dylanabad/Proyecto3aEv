@@ -3,24 +3,21 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<DialogPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.ColeccionDialogController">
+<DialogPane xmlns:fx="http://javafx.com/fxml" fx:controller="controller.ColeccionDialogController">
     <content>
         <GridPane hgap="10" vgap="10">
             <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
             <TextField fx:id="nombreField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-            <Label text="Descripción:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <TextField fx:id="descripcionField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+            <Label text="Descripción:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="descripcionField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-            <Label text="Categoría:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-            <TextField fx:id="categoriaField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+            <Label text="Categoría:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="categoriaField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         </GridPane>
     </content>
     <buttonTypes>
-        <ButtonType text="Aceptar" buttonData="OK_DONE"/>
-        <ButtonType text="Cancelar" buttonData="CANCEL_CLOSE"/>
+        <ButtonType text="Aceptar" buttonData="OK_DONE" />
+        <ButtonType text="Cancelar" buttonData="CANCEL_CLOSE" />
     </buttonTypes>
 </DialogPane>
-

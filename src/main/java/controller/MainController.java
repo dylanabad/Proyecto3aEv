@@ -12,6 +12,7 @@ import model.Item;
 import model.Usuario;
 import javafx.scene.layout.GridPane;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,8 @@ public class MainController {
     private TableColumn<Coleccion, String> categoriaCol;
     @FXML
     private TableColumn<Coleccion, String> descripcionCol;
+    @FXML
+    private Coleccion coleccionSeleccionada;
 
     @FXML
     private TableView<Item> itemsTable;
@@ -85,6 +88,7 @@ public class MainController {
 
         // Detectar selección de colección
         coleccionesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            coleccionSeleccionada = newSelection; // Actualiza la colección seleccionada
             if (newSelection != null) {
                 cargarItems(newSelection);
             }
@@ -157,16 +161,7 @@ public class MainController {
                 nueva.setNombre(nombreField.getText());
                 nueva.setCategoria(categoriaField.getText());
                 nueva.setDescripcion(descripcionArea.getText());
-
-                // 🔍 VERIFICACIÓN CRÍTICA
-                if (usuarioActivo == null) {
-                    System.out.println("⚠️ usuarioActivo es NULL. No se puede guardar la colección.");
-                } else {
-                    System.out.println("✅ usuarioActivo: " + usuarioActivo.getNombre());
-                    System.out.println("🆔 ID usuario: " + usuarioActivo.getIdUsuario());
-                    nueva.setUsuario(usuarioActivo);
-                }
-
+                nueva.setUsuario(usuario); // Usa el campo usuario
                 return nueva;
             }
             return null;
@@ -175,11 +170,8 @@ public class MainController {
         Optional<Coleccion> result = dialog.showAndWait();
 
         result.ifPresent(coleccion -> {
-            System.out.println("Intentando insertar colección: " + coleccion.getNombre());
-            coleccionDAO.insertar(coleccion); // Asegúrate de que este método también tenga prints
-
-            // 🔄 Verificamos si carga correctamente después
-            cargarColecciones();
+            coleccionDAO.save(coleccion); // Cambia insertar por save
+            cargarColecciones(); // Refresca la tabla
         });
     }
 
@@ -188,11 +180,25 @@ public class MainController {
     @FXML
     private void handleEditColeccion() {
         Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
+
         if (coleccionSeleccionada != null) {
             Coleccion coleccionEditada = mostrarDialogoColeccion(coleccionSeleccionada);
+
             if (coleccionEditada != null) {
-                coleccionDAO.updateColeccion(coleccionEditada);
-                cargarColecciones();
+                coleccionEditada.setIdColeccion(coleccionSeleccionada.getIdColeccion());
+                coleccionEditada.setUsuario(coleccionSeleccionada.getUsuario());
+
+                boolean updated = ColeccionDAO.updateColeccion(coleccionEditada);
+
+                if (updated) {
+                    int index = coleccionesTable.getItems().indexOf(coleccionSeleccionada);
+                    coleccionesTable.getItems().set(index, coleccionEditada);
+                    coleccionesTable.refresh();
+                } else {
+                    mostrarAlerta("No se pudo actualizar la colección en la base de datos.");
+                }
+            } else {
+                System.out.println("El diálogo de edición fue cancelado o cerrado.");
             }
         } else {
             mostrarAlerta("Por favor, selecciona una colección para editar.");
@@ -210,33 +216,40 @@ public class MainController {
         }
     }
 
+
     private void cargarColecciones() {
-        List<Coleccion> colecciones = coleccionDAO.findByUsuarioId(usuarioActivo.getIdUsuario());
-        coleccionesTable.setItems(FXCollections.observableArrayList(colecciones));
+        List<Coleccion> lista = coleccionDAO.findByUsuarioId(usuario.getIdUsuario());
+        ObservableList<Coleccion> colecciones = FXCollections.observableArrayList(lista);
+        coleccionesTable.setItems(colecciones);
+
     }
 
 
-    private Coleccion mostrarDialogoColeccion(Coleccion coleccion) {
+    public Coleccion mostrarDialogoColeccion(Coleccion coleccion) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/coleccionDialog.fxml"));
             DialogPane dialogPane = loader.load();
 
-            ColeccionDialogController dialogController = loader.getController();
-            dialogController.setColeccion(coleccion); // Configura la colección si no es null
+            ColeccionDialogController controller = loader.getController();
+            controller.setColeccion(coleccion);
 
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setDialogPane(dialogPane);
-            dialog.setTitle(coleccion == null ? "Agregar Colección" : "Editar Colección");
+            dialog.setTitle("Editar Colección");
 
-            ButtonType result = dialog.showAndWait().orElse(ButtonType.CANCEL);
-            if (result == ButtonType.OK) {
-                return dialogController.getColeccion();
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent()) {
+                System.out.println("Botón presionado: " + result.get());
+                if (result.get() == ButtonType.OK) {
+                    return controller.getColeccion();
+                }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return null; // Si se cancela o cierra el diálogo
     }
+
 
     private void mostrarAlerta(String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.WARNING);

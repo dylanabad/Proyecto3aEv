@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ColeccionDAO {
-    private final static String SQL_ALL = "SELECT * FROM Coleccion";
-    private final static String SQL_FIND_BY_ID = "SELECT * FROM Coleccion WHERE id_coleccion = ?";
-    private final static String SQL_INSERT = "INSERT INTO Coleccion (nombre, descripcion, categoria, id_usuario) VALUES(?, ?, ?, ?)";
-    private final static String SQL_UPDATE = "UPDATE Coleccion SET nombre = ?, descripcion = ?, categoria = ?, id_usuario = ? WHERE id_coleccion = ?";
-    private final static String SQL_DELETE = "DELETE FROM Coleccion WHERE id_coleccion = ?";
+    private final static String SQL_ALL = "SELECT * FROM coleccion";
+    private final static String SQL_FIND_BY_ID = "SELECT * FROM coleccion WHERE id_coleccion = ?";
+    private final static String SQL_INSERT = "INSERT INTO coleccion (nombre, descripcion, categoria, id_usuario) VALUES(?, ?, ?, ?)";
+    private final static String SQL_UPDATE = "UPDATE coleccion SET nombre = ?, descripcion = ?, categoria = ?, id_usuario = ? WHERE id_coleccion = ?";
+    private final static String SQL_DELETE = "DELETE FROM coleccion WHERE id_coleccion = ?";
 
     public static List<Coleccion> findAll() {
         List<Coleccion> colecciones = new ArrayList<>();
@@ -57,7 +57,7 @@ public class ColeccionDAO {
     }
 
     public void insertar(Coleccion coleccion) {
-        String sql = "INSERT INTO Coleccion (nombre, categoria, descripcion, id_usuario) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO coleccion (nombre, categoria, descripcion, id_usuario) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -81,25 +81,20 @@ public class ColeccionDAO {
 
 
     public static boolean updateColeccion(Coleccion coleccion) {
-        boolean updated = false;
-        if (coleccion != null) {
-            try (Connection con = ConnectionBD.getConnection();
-                 PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
-
-                pst.setString(1, coleccion.getNombre());
-                pst.setString(2, coleccion.getDescripcion());
-                pst.setString(3, coleccion.getCategoria());
-                pst.setInt(4, coleccion.getIdUsuario());
-                pst.setInt(5, coleccion.getIdColeccion());
-
-                updated = pst.executeUpdate() > 0;
-
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        String sql = "UPDATE colecciones SET nombre = ?, categoria = ?, descripcion = ? WHERE id_coleccion = ?";
+        try (Connection conn = ConnectionBD.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, coleccion.getNombre());
+            stmt.setString(2, coleccion.getCategoria());
+            stmt.setString(3, coleccion.getDescripcion());
+            stmt.setInt(4, coleccion.getIdColeccion());
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
-        return updated;
     }
+
 
 
     public static boolean deleteColeccion(int idColeccion) {
