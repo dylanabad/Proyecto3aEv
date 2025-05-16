@@ -36,12 +36,16 @@ public class ColeccionController {
     }
 
     public Coleccion getColeccion() {
-        if (coleccion == null) {
-            coleccion = new Coleccion();
-        }
+        Coleccion coleccion = new Coleccion();
         coleccion.setNombre(nombreField.getText());
-        coleccion.setCategoria(categoriaField.getText());
         coleccion.setDescripcion(descripcionField.getText());
+        coleccion.setCategoria(categoriaField.getText());
+
+        // Mensajes de depuración
+        System.out.println("Nombre: " + coleccion.getNombre());
+        System.out.println("Descripción: " + coleccion.getDescripcion());
+        System.out.println("Categoría: " + coleccion.getCategoria());
+
         return coleccion;
     }
 

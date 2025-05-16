@@ -11,7 +11,6 @@ import model.Coleccion;
 import model.Item;
 import model.Usuario;
 import javafx.scene.layout.GridPane;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -103,12 +102,29 @@ public class MainController {
 
     @FXML
     private void handleAddItem() {
+        Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
+        if (coleccionSeleccionada == null) {
+            System.out.println("Debes seleccionar una colección primero.");
+            return;
+        }
+
         Item nuevoItem = mostrarDialogoItem(null);
         if (nuevoItem != null) {
-            itemDAO.save(nuevoItem); // Guarda el ítem en la base de datos
-            items.add(nuevoItem); // Añade el ítem a la lista observable
+            nuevoItem.setIdColeccion(coleccionSeleccionada.getIdColeccion());
+
+            try {
+                itemDAO.save(nuevoItem);
+                items.add(nuevoItem);
+                System.out.println("Ítem agregado: " + nuevoItem.getNombre());
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Error al guardar el ítem.");
+            }
+        } else {
+            System.out.println("Diálogo cancelado o cerrado sin crear ítem.");
         }
     }
+
 
     @FXML
     private void handleEditItem() {
@@ -238,11 +254,8 @@ public class MainController {
             dialog.setTitle("Editar Colección");
 
             Optional<ButtonType> result = dialog.showAndWait();
-            if (result.isPresent()) {
-                System.out.println("Botón presionado: " + result.get());
-                if (result.get() == ButtonType.OK) {
-                    return controller.getColeccion();
-                }
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                return controller.getColeccion();
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -272,7 +285,9 @@ public class MainController {
             dialog.setTitle(item == null ? "Agregar Ítem" : "Editar Ítem");
 
             ButtonType result = dialog.showAndWait().orElse(ButtonType.CANCEL);
-            if (result == ButtonType.OK) {
+
+            // Cambia la comparación:
+            if (result.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                 return controller.getItem();
             }
         } catch (Exception e) {

@@ -23,8 +23,8 @@ public class ItemDialogController {
 
     @FXML
     private void initialize() {
-        // Inicializar valores del ChoiceBox
-        estadoChoiceBox.getItems().addAll("Nuevo", "Usado");
+        // Usa exactamente los valores que espera tu base de datos
+        estadoChoiceBox.getItems().addAll("nuevo", "usado", "en venta", "reservado");
     }
 
     public void setItem(Item item) {
@@ -43,11 +43,18 @@ public class ItemDialogController {
         if (item == null) {
             item = new Item();
         }
+        System.out.println("Capturando valores del diálogo...");
         item.setNombre(nombreField.getText());
         item.setDescripcion(descripcionField.getText());
         item.setEstado(estadoChoiceBox.getValue());
         item.setFechaAdquisicion(fechaAdquisicionPicker.getValue());
-        item.setPrecio(Double.parseDouble(precioField.getText()));
+        try {
+            item.setPrecio(Double.parseDouble(precioField.getText()));
+        } catch (NumberFormatException e) {
+            System.out.println("Precio inválido, estableciendo a 0");
+            item.setPrecio(0.0);
+        }
+        System.out.println("Item capturado: " + item.getNombre() + ", " + item.getEstado() + ", " + item.getPrecio());
         return item;
     }
 }

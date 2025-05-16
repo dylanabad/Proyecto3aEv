@@ -22,20 +22,22 @@ public class ColeccionDialogController {
             nombreField.setText(coleccion.getNombre());
             categoriaField.setText(coleccion.getCategoria());
             descripcionField.setText(coleccion.getDescripcion());
-        } else {
-            this.coleccion = new Coleccion();
         }
     }
 
     public Coleccion getColeccion() {
-        System.out.println("Obteniendo colección editada");
-        System.out.println("Nombre: " + nombreField.getText());
-        System.out.println("Categoría: " + categoriaField.getText());
-        System.out.println("Descripción: " + descripcionField.getText());
-
+        Coleccion coleccion = new Coleccion();
         coleccion.setNombre(nombreField.getText());
-        coleccion.setCategoria(categoriaField.getText());
         coleccion.setDescripcion(descripcionField.getText());
+        coleccion.setCategoria(categoriaField.getText());
+
+        // Mensajes de depuración
+        System.out.println("Nombre: " + coleccion.getNombre());
+        System.out.println("Descripción: " + coleccion.getDescripcion());
+        System.out.println("Categoría: " + coleccion.getCategoria());
+
         return coleccion;
     }
+
+
 }
