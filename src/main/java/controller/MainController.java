@@ -254,7 +254,7 @@ public class MainController {
             dialog.setTitle("Editar Colección");
 
             Optional<ButtonType> result = dialog.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
+            if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE)  {
                 return controller.getColeccion();
             }
         } catch (IOException e) {

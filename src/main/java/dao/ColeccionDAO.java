@@ -81,19 +81,33 @@ public class ColeccionDAO {
 
 
     public static boolean updateColeccion(Coleccion coleccion) {
-        String sql = "UPDATE colecciones SET nombre = ?, categoria = ?, descripcion = ? WHERE id_coleccion = ?";
+        String sql = "UPDATE coleccion SET nombre = ?, categoria = ?, descripcion = ? WHERE id_coleccion = ?";
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            // Depuración: mostrar los datos que se intentan actualizar
+            System.out.println("Intentando actualizar colección...");
+            System.out.println("ID: " + coleccion.getIdColeccion());
+            System.out.println("Nombre: " + coleccion.getNombre());
+            System.out.println("Categoría: " + coleccion.getCategoria());
+            System.out.println("Descripción: " + coleccion.getDescripcion());
+
+            // Establecer parámetros
             stmt.setString(1, coleccion.getNombre());
             stmt.setString(2, coleccion.getCategoria());
             stmt.setString(3, coleccion.getDescripcion());
             stmt.setInt(4, coleccion.getIdColeccion());
-            return stmt.executeUpdate() > 0;
+
+            int filasAfectadas = stmt.executeUpdate();
+            System.out.println("Filas afectadas: " + filasAfectadas);
+            return filasAfectadas > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
 
 
 

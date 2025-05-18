@@ -24,20 +24,20 @@ public class ColeccionDialogController {
             descripcionField.setText(coleccion.getDescripcion());
         }
     }
-
     public Coleccion getColeccion() {
-        Coleccion coleccion = new Coleccion();
+        if (coleccion == null) {
+            coleccion = new Coleccion(); // Solo si no existe (para casos como crear nueva)
+        }
         coleccion.setNombre(nombreField.getText());
         coleccion.setDescripcion(descripcionField.getText());
         coleccion.setCategoria(categoriaField.getText());
-
-        // Mensajes de depuración
-        System.out.println("Nombre: " + coleccion.getNombre());
-        System.out.println("Descripción: " + coleccion.getDescripcion());
-        System.out.println("Categoría: " + coleccion.getCategoria());
-
         return coleccion;
     }
+
+
+
+
+
 
 
 }
