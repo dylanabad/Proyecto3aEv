@@ -1,3 +1,5 @@
+// Controlador que gestiona las operaciones relacionadas con los ítems.
+// Permite agregar, editar y eliminar ítems asociados a una colección.
 package controller;
 
 import dao.ItemDAO;
@@ -21,6 +23,11 @@ public class ItemController {
     private final ItemDAO itemDAO = new ItemDAO();
     private final ObservableList<Item> itemList = FXCollections.observableArrayList();
 
+
+    /**
+     * Inicializa el controlador automáticamente después de cargar el FXML.
+     * Configura las columnas de la tabla y carga los datos desde la base de datos.
+     */
     @FXML
     private void initialize() {
         // Configurar columnas de la tabla
@@ -31,7 +38,10 @@ public class ItemController {
         itemList.addAll(itemDAO.findByColeccionId(1)); // Cambia el ID según sea necesario
         itemTable.setItems(itemList);
     }
-
+    /**
+     * Maneja la acción de agregar un nuevo ítem.
+     * Abre un diálogo para introducir los datos y guarda el ítem si se confirma.
+     */
     @FXML
     private void handleAgregarItem() {
         try {
@@ -56,7 +66,10 @@ public class ItemController {
             e.printStackTrace();
         }
     }
-
+    /**
+     * Maneja la acción de editar un ítem seleccionado.
+     * Permite modificar sus datos y actualizarlos en la base de datos y la tabla.
+     */
     @FXML
     private void handleEditarItem() {
         Item itemSeleccionado = itemTable.getSelectionModel().getSelectedItem();
@@ -74,6 +87,12 @@ public class ItemController {
         }
     }
 
+    /**
+     * Muestra una alerta de información con el mensaje y título proporcionado.
+     *
+     * @param titulo Título de la alerta
+     * @param mensaje Mensaje que se mostrará en la alerta
+     */
     private void mostrarAlerta(String titulo, String mensaje) {
         Alert alert = new Alert(AlertType.INFORMATION, mensaje, ButtonType.OK);
         alert.setTitle(titulo);

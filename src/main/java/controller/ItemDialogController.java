@@ -1,3 +1,5 @@
+// Controlador para el diálogo de edición o creación de ítems.
+// Maneja la inicialización de los campos del formulario y la obtención de datos ingresados por el usuario.
 package controller;
 
 import javafx.fxml.FXML;
@@ -21,12 +23,21 @@ public class ItemDialogController {
 
     private Item item;
 
+    /**
+     * Inicializa el controlador al cargarse el FXML.
+     * Se ejecuta automáticamente y configura los elementos iniciales del formulario.
+     */
     @FXML
     private void initialize() {
         // Usa exactamente los valores que espera tu base de datos
         estadoChoiceBox.getItems().addAll("nuevo", "usado", "en venta", "reservado");
     }
-
+    /**
+     * Establece un ítem en el formulario, usado cuando se va a editar un ítem existente.
+     * Los campos se rellenan con los datos actuales del ítem.
+     *
+     * @param item El ítem a editar
+     */
     public void setItem(Item item) {
         this.item = item;
 
@@ -39,6 +50,12 @@ public class ItemDialogController {
         }
     }
 
+    /**
+     * Obtiene los valores ingresados en el formulario y los guarda en un objeto Item.
+     * Si no se está editando uno existente, se crea uno nuevo.
+     *
+     * @return El ítem con los datos del formulario
+     */
     public Item getItem() {
         if (item == null) {
             item = new Item();

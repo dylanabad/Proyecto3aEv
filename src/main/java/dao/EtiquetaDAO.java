@@ -14,6 +14,10 @@ public class EtiquetaDAO {
     private final static String SQL_UPDATE = "UPDATE Etiqueta SET nombre = ? WHERE id_etiqueta = ?";
     private final static String SQL_DELETE = "DELETE FROM Etiqueta WHERE id_etiqueta = ?";
 
+    /**
+     * Recupera todas las etiquetas almacenadas en la base de datos.
+     * @return Lista con todas las etiquetas.
+     */
     public static List<Etiqueta> findAll() {
         List<Etiqueta> etiquetas = new ArrayList<>();
         try (Connection con = ConnectionBD.getConnection();
@@ -30,7 +34,11 @@ public class EtiquetaDAO {
         }
         return etiquetas;
     }
-
+    /**
+     * Busca una etiqueta por su ID.
+     * @param idEtiqueta Identificador de la etiqueta.
+     * @return Objeto Etiqueta si se encuentra, o null si no existe.
+     */
     public static Etiqueta findById(int idEtiqueta) {
         Etiqueta etiqueta = null;
         try (Connection con = ConnectionBD.getConnection();
@@ -48,6 +56,11 @@ public class EtiquetaDAO {
         return etiqueta;
     }
 
+    /**
+     * Inserta una nueva etiqueta en la base de datos.
+     * @param etiqueta Objeto Etiqueta a insertar.
+     * @return Etiqueta con el ID generado asignado, o null si falla la inserción.
+     */
     public static Etiqueta insertEtiqueta(Etiqueta etiqueta) {
         if (etiqueta != null) {
             try (Connection con = ConnectionBD.getConnection();
@@ -66,6 +79,11 @@ public class EtiquetaDAO {
         return etiqueta;
     }
 
+    /**
+     * Actualiza una etiqueta existente en la base de datos.
+     * @param etiqueta Objeto Etiqueta con datos actualizados.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean updateEtiqueta(Etiqueta etiqueta) {
         boolean updated = false;
         if (etiqueta != null) {
@@ -81,6 +99,11 @@ public class EtiquetaDAO {
         return updated;
     }
 
+    /**
+     * Elimina una etiqueta de la base de datos por su ID.
+     * @param idEtiqueta Identificador de la etiqueta a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean deleteEtiqueta(int idEtiqueta) {
         boolean deleted = false;
         try (Connection con = ConnectionBD.getConnection();

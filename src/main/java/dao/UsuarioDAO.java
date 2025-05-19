@@ -14,6 +14,10 @@ public class UsuarioDAO {
     private final static String SQL_UPDATE = "UPDATE Usuario SET nombre = ?, email = ?, contraseña = ? WHERE id_usuario = ?";
     private final static String SQL_DELETE = "DELETE FROM Usuario WHERE id_usuario = ?";
 
+    /**
+     * Obtiene todos los usuarios almacenados en la base de datos.
+     * @return Lista con todos los usuarios encontrados.
+     */
     public static List<Usuario> findAll() {
         List<Usuario> usuarios = new ArrayList<>();
         try (Connection con = ConnectionBD.getConnection();
@@ -33,6 +37,11 @@ public class UsuarioDAO {
         return usuarios;
     }
 
+    /**
+     * Busca un usuario por su ID.
+     * @param idUsuario ID del usuario que se desea buscar.
+     * @return El usuario encontrado o null si no existe.
+     */
     public static Usuario findById(int idUsuario) {
         Usuario usuario = null;
         try (Connection con = ConnectionBD.getConnection();
@@ -51,7 +60,11 @@ public class UsuarioDAO {
         }
         return usuario;
     }
-
+    /**
+     * Inserta un nuevo usuario en la base de datos.
+     * @param usuario Objeto Usuario con los datos a insertar.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     public static boolean insertUsuario(Usuario usuario) {
         try (Connection con = ConnectionBD.getConnection();
              PreparedStatement pst = con.prepareStatement(SQL_INSERT)) {
@@ -65,6 +78,11 @@ public class UsuarioDAO {
         }
     }
 
+    /**
+     * Actualiza los datos de un usuario existente.
+     * @param usuario Objeto Usuario con los datos actualizados (debe incluir el ID).
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean updateUsuario(Usuario usuario) {
         boolean updated = false;
         if (usuario != null) {
@@ -81,7 +99,11 @@ public class UsuarioDAO {
         }
         return updated;
     }
-
+    /**
+     * Elimina un usuario de la base de datos según su ID.
+     * @param idUsuario ID del usuario a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean deleteUsuario(int idUsuario) {
         boolean deleted = false;
         try (Connection con = ConnectionBD.getConnection();
@@ -93,6 +115,12 @@ public class UsuarioDAO {
         }
         return deleted;
     }
+    /**
+     * Método para autenticar un usuario mediante email y contraseña.
+     * @param email Correo electrónico del usuario.
+     * @param password Contraseña del usuario.
+     * @return El usuario si las credenciales son correctas, null si no.
+     */
     public Usuario login(String email, String password) {
         String query = "SELECT * FROM usuario WHERE email = ? AND contraseña = ?";
         try (Connection conn = ConnectionBD.getConnection();

@@ -1,3 +1,5 @@
+// Controlador que gestiona la lógica de inicio de sesión.
+// Verifica las credenciales del usuario y permite el acceso a la aplicación si son válidas.
 package controller;
 
 import dao.UsuarioDAO;
@@ -21,6 +23,10 @@ public class LoginController {
     private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
 
+    /**
+     * Método que se ejecuta al presionar el botón de login.
+     * Verifica las credenciales del usuario y, si son válidas, abre la ventana principal.
+     */
     @FXML
     private void handleLogin() {
         String email = emailField.getText();
@@ -50,6 +56,13 @@ public class LoginController {
     }
 
 
+    /**
+     * Muestra una alerta con el mensaje indicado.
+     *
+     * @param title Título de la alerta
+     * @param msg Mensaje de la alerta
+     * @param type Tipo de alerta (INFORMATION, ERROR, etc.)
+     */
     private void showAlert(String title, String msg, Alert.AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

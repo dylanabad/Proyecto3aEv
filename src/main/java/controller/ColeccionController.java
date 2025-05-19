@@ -1,3 +1,5 @@
+// Controlador que maneja las operaciones relacionadas con las colecciones.
+// Incluye métodos para agregar colecciones y gestionar el diálogo correspondiente.
 package controller;
 
 import javafx.collections.FXCollections;
@@ -19,12 +21,14 @@ public class ColeccionController {
     private TextField categoriaField;
     @FXML
     private TextField descripcionField;
-
-
     private Coleccion coleccion;
     private ColeccionDAO coleccionDAO = new ColeccionDAO();
     private ObservableList<Coleccion> coleccionList = FXCollections.observableArrayList();
 
+    /**
+     * Establece la colección actual y llena los campos del formulario si no es nula.
+     * @param coleccion La colección a editar o visualizar.
+     */
     public void setColeccion(Coleccion coleccion) {
         this.coleccion = coleccion;
 
@@ -34,14 +38,15 @@ public class ColeccionController {
             descripcionField.setText(coleccion.getDescripcion());
         }
     }
-
+    /**
+     * Crea un objeto Coleccion a partir de los campos del formulario.
+     * @return una nueva instancia de Coleccion con los datos introducidos.
+     */
     public Coleccion getColeccion() {
         Coleccion coleccion = new Coleccion();
         coleccion.setNombre(nombreField.getText());
         coleccion.setDescripcion(descripcionField.getText());
         coleccion.setCategoria(categoriaField.getText());
-
-        // Mensajes de depuración
         System.out.println("Nombre: " + coleccion.getNombre());
         System.out.println("Descripción: " + coleccion.getDescripcion());
         System.out.println("Categoría: " + coleccion.getCategoria());
@@ -49,6 +54,11 @@ public class ColeccionController {
         return coleccion;
     }
 
+    /**
+     * Maneja la acción de agregar una nueva colección.
+     * Carga y muestra un diálogo donde el usuario puede introducir los datos de la nueva colección.
+     * Si se confirma la acción, guarda la colección en la base de datos y la añade a la lista observable.
+     */
     @FXML
     private void handleAgregarColeccion() {
         try {

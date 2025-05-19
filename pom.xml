@@ -81,9 +81,9 @@
                         <id>default-cli</id>
                         <configuration>
                             <mainClass>org.example.proyecto3aev/org.example.proyecto3aev.MainApp</mainClass>
-                            <launcher>app</launcher>
-                            <jlinkZipName>app</jlinkZipName>
-                            <jlinkImageName>app</jlinkImageName>
+                            <launcher>test</launcher>
+                            <jlinkZipName>test</jlinkZipName>
+                            <jlinkImageName>test</jlinkImageName>
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>

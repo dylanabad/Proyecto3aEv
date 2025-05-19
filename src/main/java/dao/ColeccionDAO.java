@@ -14,6 +14,10 @@ public class ColeccionDAO {
     private final static String SQL_UPDATE = "UPDATE coleccion SET nombre = ?, descripcion = ?, categoria = ?, id_usuario = ? WHERE id_coleccion = ?";
     private final static String SQL_DELETE = "DELETE FROM coleccion WHERE id_coleccion = ?";
 
+    /**
+     * Recupera todas las colecciones de la base de datos.
+     * @return lista de colecciones.
+     */
     public static List<Coleccion> findAll() {
         List<Coleccion> colecciones = new ArrayList<>();
         try (Connection con = ConnectionBD.getConnection();
@@ -34,6 +38,11 @@ public class ColeccionDAO {
         return colecciones;
     }
 
+    /**
+     * Obtiene todas las colecciones de un usuario específico por su ID.
+     * @param idUsuario identificador del usuario.
+     * @return lista de colecciones del usuario.
+     */
     public List<Coleccion> findByUsuarioId(int idUsuario) {
         List<Coleccion> colecciones = new ArrayList<>();
         String sql = "SELECT * FROM coleccion WHERE id_usuario = ?";
@@ -56,6 +65,10 @@ public class ColeccionDAO {
         return colecciones;
     }
 
+    /**
+     * Inserta una nueva colección en la base de datos.
+     * @param coleccion objeto Coleccion con datos a insertar.
+     */
     public void insertar(Coleccion coleccion) {
         String sql = "INSERT INTO coleccion (nombre, categoria, descripcion, id_usuario) VALUES (?, ?, ?, ?)";
 
@@ -79,20 +92,23 @@ public class ColeccionDAO {
         }
     }
 
-
+    /**
+     * Actualiza una colección existente en la base de datos.
+     * @param coleccion objeto Coleccion con datos actualizados.
+     * @return true si la actualización fue exitosa, false en caso contrario.
+     */
     public static boolean updateColeccion(Coleccion coleccion) {
         String sql = "UPDATE coleccion SET nombre = ?, categoria = ?, descripcion = ? WHERE id_coleccion = ?";
         try (Connection conn = ConnectionBD.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            // Depuración: mostrar los datos que se intentan actualizar
+            // Depuración: mostrando datos al intentar actualizar
             System.out.println("Intentando actualizar colección...");
             System.out.println("ID: " + coleccion.getIdColeccion());
             System.out.println("Nombre: " + coleccion.getNombre());
             System.out.println("Categoría: " + coleccion.getCategoria());
             System.out.println("Descripción: " + coleccion.getDescripcion());
 
-            // Establecer parámetros
             stmt.setString(1, coleccion.getNombre());
             stmt.setString(2, coleccion.getCategoria());
             stmt.setString(3, coleccion.getDescripcion());
@@ -110,7 +126,11 @@ public class ColeccionDAO {
 
 
 
-
+    /**
+     * Elimina una colección por su ID.
+     * @param idColeccion identificador de la colección a eliminar.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean deleteColeccion(int idColeccion) {
         boolean deleted = false;
         try (Connection con = ConnectionBD.getConnection();
@@ -124,6 +144,11 @@ public class ColeccionDAO {
 
     }
 
+    /**
+     * Guarda una nueva colección (similar a insertar pero devuelve booleano).
+     * @param coleccion objeto Coleccion a guardar.
+     * @return true si se guardó correctamente.
+     */
     public boolean save(Coleccion coleccion) {
         String sql = "INSERT INTO coleccion (nombre, categoria, descripcion, id_usuario) VALUES (?, ?, ?, ?)";
         try (Connection conn = ConnectionBD.getConnection();
@@ -134,18 +159,26 @@ public class ColeccionDAO {
             stmt.setString(3, coleccion.getDescripcion());
             stmt.setInt(4, coleccion.getIdUsuario());
 
-            return stmt.executeUpdate() > 0; // Devuelve true si se insertó al menos una fila
+            return stmt.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Devuelve false si ocurre un error
+            return false;
         }
     }
 
+    /**
+     * Actualiza una colección, delegando a updateColeccion estático.
+     * @param coleccion colección con datos a actualizar.
+     */
     public void update(Coleccion coleccion) {
         updateColeccion(coleccion);
     }
 
 
+    /**
+     * Elimina una colección por su ID.
+     * @param idColeccion id de la colección a eliminar.
+     */
     public void delete(int idColeccion) {
         String sql = "DELETE FROM coleccion WHERE id_coleccion = ?";
         try (Connection con = ConnectionBD.getConnection();

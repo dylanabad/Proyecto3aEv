@@ -1,3 +1,6 @@
+// Controlador principal que maneja las acciones de la interfaz principal.
+// Permite agregar, editar y eliminar colecciones, además de cargar los datos en la tabla.
+
 package controller;
 
 import dao.ColeccionDAO;
@@ -59,6 +62,7 @@ public class MainController {
         this.usuarioActivo = usuario;
     }
 
+    // Métodos para establecer el usuario
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
         this.usuarioActivo = usuario;
@@ -74,10 +78,9 @@ public class MainController {
     }
 
 
-
+    // Inicialización del controlador
     @FXML
     private void initialize() {
-        // Configurar columnas de ítems
         nombreItemCol.setCellValueFactory(cellData -> cellData.getValue().nombreProperty());
         descripcionItemCol.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
         estadoColumn.setCellValueFactory(cellData -> cellData.getValue().estadoProperty());
@@ -85,7 +88,7 @@ public class MainController {
         precioColumn.setCellValueFactory(cellData -> cellData.getValue().precioProperty().asObject());
         idColeccionColumn.setCellValueFactory(cellData -> cellData.getValue().idColeccionProperty().asObject());
 
-        // Detectar selección de colección
+
         coleccionesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             coleccionSeleccionada = newSelection; // Actualiza la colección seleccionada
             if (newSelection != null) {
@@ -94,12 +97,14 @@ public class MainController {
         });
     }
 
+    // Carga los ítems de la colección seleccionada
     private void cargarItems(Coleccion coleccion) {
         items.clear();
         items.addAll(itemDAO.findByColeccionId(coleccion.getIdColeccion()));
         itemsTable.setItems(items);
     }
 
+    // Manejar acción de agregar ítem
     @FXML
     private void handleAddItem() {
         Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
@@ -125,7 +130,7 @@ public class MainController {
         }
     }
 
-
+    // Manejar acción de editar ítem
     @FXML
     private void handleEditItem() {
         Item itemSeleccionado = itemsTable.getSelectionModel().getSelectedItem();
@@ -137,7 +142,7 @@ public class MainController {
             }
         }
     }
-
+    // Manejar acción de eliminar ítem
     @FXML
     private void handleDeleteItem() {
         Item itemSeleccionado = itemsTable.getSelectionModel().getSelectedItem();
@@ -147,6 +152,7 @@ public class MainController {
         }
     }
 
+    // Manejar acción de agregar colección
     @FXML
     private void handleAddColeccion() {
         Dialog<Coleccion> dialog = new Dialog<>();
@@ -192,7 +198,7 @@ public class MainController {
     }
 
 
-
+    //Manejar acción de editar colección
     @FXML
     private void handleEditColeccion() {
         Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
@@ -221,6 +227,7 @@ public class MainController {
         }
     }
 
+    // Manejar acción de eliminar colección
     @FXML
     private void handleDeleteColeccion() {
         Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
@@ -232,7 +239,7 @@ public class MainController {
         }
     }
 
-
+    //Recarga la tabla de colecciones del usuario
     private void cargarColecciones() {
         List<Coleccion> lista = coleccionDAO.findByUsuarioId(usuario.getIdUsuario());
         ObservableList<Coleccion> colecciones = FXCollections.observableArrayList(lista);
@@ -240,7 +247,7 @@ public class MainController {
 
     }
 
-
+    //Muestra el diálogo para editar o agregar una colección
     public Coleccion mostrarDialogoColeccion(Coleccion coleccion) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/coleccionDialog.fxml"));
@@ -260,10 +267,10 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null; // Si se cancela o cierra el diálogo
+        return null;
     }
 
-
+    //Myestra una alerta de advertencia al usuario
     private void mostrarAlerta(String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.WARNING);
         alerta.setTitle("Advertencia");
@@ -272,6 +279,7 @@ public class MainController {
         alerta.showAndWait();
     }
 
+    //Muestra el diálogo para editar o agregar un ítem
     private Item mostrarDialogoItem(Item item) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/itemDialog.fxml"));

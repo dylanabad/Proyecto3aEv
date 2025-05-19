@@ -12,6 +12,10 @@ public class ItemEtiquetaDAO {
     private final static String SQL_INSERT = "INSERT INTO Item_Etiqueta (id_item, id_etiqueta) VALUES(?, ?)";
     private final static String SQL_DELETE = "DELETE FROM Item_Etiqueta WHERE id_item = ? AND id_etiqueta = ?";
 
+    /**
+     * Obtiene todas las relaciones entre Items y Etiquetas registradas en la base de datos.
+     * @return Lista de objetos ItemEtiqueta que representan las relaciones.
+     */
     public static List<ItemEtiqueta> findAll() {
         List<ItemEtiqueta> itemEtiquetas = new ArrayList<>();
         try (Connection con = ConnectionBD.getConnection();
@@ -29,6 +33,11 @@ public class ItemEtiquetaDAO {
         return itemEtiquetas;
     }
 
+    /**
+     * Inserta una nueva relación entre un Item y una Etiqueta.
+     * @param itemEtiqueta Objeto que contiene los IDs del item y la etiqueta.
+     * @return true si la inserción fue exitosa, false en caso contrario.
+     */
     public static boolean insertItemEtiqueta(ItemEtiqueta itemEtiqueta) {
         boolean inserted = false;
         if (itemEtiqueta != null) {
@@ -43,7 +52,12 @@ public class ItemEtiquetaDAO {
         }
         return inserted;
     }
-
+    /**
+     * Elimina una relación específica entre un Item y una Etiqueta según sus IDs.
+     * @param idItem ID del item.
+     * @param idEtiqueta ID de la etiqueta.
+     * @return true si la eliminación fue exitosa, false en caso contrario.
+     */
     public static boolean deleteItemEtiqueta(int idItem, int idEtiqueta) {
         boolean deleted = false;
         try (Connection con = ConnectionBD.getConnection();

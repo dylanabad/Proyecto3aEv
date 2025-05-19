@@ -1,3 +1,5 @@
+// Clase principal de la aplicación que inicializa la interfaz gráfica.
+// Carga el archivo FXML principal y configura la ventana principal
 package org.example.proyecto3aev;
 
 import javafx.application.Application;
