@@ -4,6 +4,7 @@
 package controller;
 
 import dao.ColeccionDAO;
+import dao.EtiquetaDAO;
 import dao.ItemDAO;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -11,10 +12,12 @@ import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import model.Coleccion;
+import model.Etiqueta;
 import model.Item;
 import model.Usuario;
 import javafx.scene.layout.GridPane;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -49,12 +52,13 @@ public class MainController {
     private TableColumn<Item, Double> precioColumn;
     @FXML
     private TableColumn<Item, Integer> idColeccionColumn;
-
+    @FXML
     private Usuario usuario;
     private ColeccionDAO coleccionDAO = new ColeccionDAO();
     private ItemDAO itemDAO = new ItemDAO(); // Declaración de itemDAO
 
     private ObservableList<Item> items = FXCollections.observableArrayList();
+    private ObservableList<Etiqueta> etiquetasDelItem = FXCollections.observableArrayList();
 
     private Usuario usuarioActivo;
 
@@ -66,7 +70,7 @@ public class MainController {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
         this.usuarioActivo = usuario;
-        welcomeLabel.setText("Bienvenido, " + usuario.getNombre());
+        welcomeLabel.setText("Bienvenid@ a MyCollections, " + usuario.getNombre());
 
         List<Coleccion> lista = coleccionDAO.findByUsuarioId(usuario.getIdUsuario());
         ObservableList<Coleccion> colecciones = FXCollections.observableArrayList(lista);
@@ -279,6 +283,14 @@ public class MainController {
         alerta.showAndWait();
     }
 
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
     //Muestra el diálogo para editar o agregar un ítem
     private Item mostrarDialogoItem(Item item) {
         try {
@@ -303,4 +315,31 @@ public class MainController {
         }
         return null;
     }
+    public void handleAddEtiquetaToItem() {
+        Item selectedItem = itemsTable.getSelectionModel().getSelectedItem();
+        if (selectedItem == null) {
+            showAlert("Selecciona un ítem", "Por favor, selecciona un ítem para añadir una etiqueta.");
+            return;
+        }
+
+        List<Etiqueta> etiquetas = EtiquetaDAO.findAll();
+        ChoiceDialog<Etiqueta> dialog = new ChoiceDialog<>(null, etiquetas);
+        dialog.setTitle("Añadir Etiqueta");
+        dialog.setHeaderText("Selecciona una etiqueta para añadir al ítem");
+        dialog.setContentText("Etiqueta:");
+
+        Optional<Etiqueta> result = dialog.showAndWait();
+        result.ifPresent(etiqueta -> {
+            try {
+                EtiquetaDAO.addEtiquetaToItem(selectedItem.getIdItem(), etiqueta.getIdEtiqueta());
+                etiquetasDelItem.add(etiqueta); // Actualiza la lista observable
+                showAlert("Éxito", "Etiqueta añadida correctamente al ítem.");
+            } catch (SQLException e) {
+                e.printStackTrace();
+                showAlert("Error", "No se pudo añadir la etiqueta al ítem.");
+            }
+        });
+    }
+
+
 }

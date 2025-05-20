@@ -115,4 +115,16 @@ public class EtiquetaDAO {
         }
         return deleted;
     }
+
+    public static void addEtiquetaToItem(int idItem, int idEtiqueta) throws SQLException {
+        String sql = "INSERT INTO Item_Etiqueta (id_item, id_etiqueta) VALUES (?, ?)";
+        try (Connection con = ConnectionBD.getConnection();
+             PreparedStatement pst = con.prepareStatement(sql)) {
+            pst.setInt(1, idItem);
+            pst.setInt(2, idEtiqueta);
+            pst.executeUpdate();
+        }
+    }
+
+
 }

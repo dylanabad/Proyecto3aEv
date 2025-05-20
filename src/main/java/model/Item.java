@@ -1,6 +1,8 @@
 package model;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
 
@@ -12,6 +14,7 @@ public class Item {
     private ObjectProperty<LocalDate> fechaAdquisicion;
     private DoubleProperty precio;
     private IntegerProperty idColeccion; // Nueva propiedad
+    private ObservableList<Etiqueta> etiquetas; // Lista de etiquetas
 
     public Item() {
         this.idItem = new SimpleIntegerProperty();
@@ -21,6 +24,7 @@ public class Item {
         this.fechaAdquisicion = new SimpleObjectProperty<>();
         this.precio = new SimpleDoubleProperty();
         this.idColeccion = new SimpleIntegerProperty(); // Inicialización
+        this.etiquetas = FXCollections.observableArrayList(); // Inicialización de etiquetas
     }
 
     // Getters y setters para idItem
@@ -112,5 +116,22 @@ public class Item {
 
     public IntegerProperty idColeccionProperty() {
         return idColeccion;
+    }
+
+    // Getters y setters para etiquetas
+    public ObservableList<Etiqueta> getEtiquetas() {
+        return etiquetas;
+    }
+
+    public void setEtiquetas(ObservableList<Etiqueta> etiquetas) {
+        this.etiquetas = etiquetas;
+    }
+
+    public void addEtiqueta(Etiqueta etiqueta) {
+        this.etiquetas.add(etiqueta);
+    }
+
+    public void removeEtiqueta(Etiqueta etiqueta) {
+        this.etiquetas.remove(etiqueta);
     }
 }

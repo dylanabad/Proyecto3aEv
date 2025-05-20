@@ -9,11 +9,12 @@
             <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
             <TextField fx:id="nombreField" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
+            <Label text="Categoría:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <TextField fx:id="categoriaField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
             <Label text="Descripción:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
             <TextField fx:id="descripcionField" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
-            <Label text="Categoría:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-            <TextField fx:id="categoriaField" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
         </GridPane>
     </content>
     <buttonTypes>
