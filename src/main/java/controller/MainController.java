@@ -187,7 +187,7 @@ public class MainController {
                 nueva.setNombre(nombreField.getText());
                 nueva.setCategoria(categoriaField.getText());
                 nueva.setDescripcion(descripcionArea.getText());
-                nueva.setUsuario(usuario); // Usa el campo usuario
+                nueva.setUsuario(usuario);
                 return nueva;
             }
             return null;
@@ -196,8 +196,8 @@ public class MainController {
         Optional<Coleccion> result = dialog.showAndWait();
 
         result.ifPresent(coleccion -> {
-            coleccionDAO.save(coleccion); // Cambia insertar por save
-            cargarColecciones(); // Refresca la tabla
+            coleccionDAO.save(coleccion);
+            cargarColecciones();
         });
     }
 
@@ -236,8 +236,8 @@ public class MainController {
     private void handleDeleteColeccion() {
         Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
         if (coleccionSeleccionada != null) {
-            coleccionesTable.getItems().remove(coleccionSeleccionada); // Elimina la colección de la tabla
-            coleccionDAO.delete(coleccionSeleccionada.getIdColeccion()); // Elimina la colección de la base de datos
+            coleccionesTable.getItems().remove(coleccionSeleccionada);
+            coleccionDAO.delete(coleccionSeleccionada.getIdColeccion());
         } else {
             mostrarAlerta("Por favor, selecciona una colección para eliminar.");
         }
@@ -298,7 +298,7 @@ public class MainController {
             DialogPane dialogPane = loader.load();
 
             ItemDialogController controller = loader.getController();
-            controller.setItem(item); // Configura el ítem si no es null
+            controller.setItem(item);
 
             Dialog<ButtonType> dialog = new Dialog<>();
             dialog.setDialogPane(dialogPane);
@@ -332,7 +332,7 @@ public class MainController {
         result.ifPresent(etiqueta -> {
             try {
                 EtiquetaDAO.addEtiquetaToItem(selectedItem.getIdItem(), etiqueta.getIdEtiqueta());
-                etiquetasDelItem.add(etiqueta); // Actualiza la lista observable
+                etiquetasDelItem.add(etiqueta);
                 showAlert("Éxito", "Etiqueta añadida correctamente al ítem.");
             } catch (SQLException e) {
                 e.printStackTrace();
