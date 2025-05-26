@@ -14,7 +14,7 @@ public class Item {
     private ObjectProperty<LocalDate> fechaAdquisicion;
     private DoubleProperty precio;
     private IntegerProperty idColeccion; // Nueva propiedad
-    private ObservableList<Etiqueta> etiquetas; // Lista de etiquetas
+
 
     public Item() {
         this.idItem = new SimpleIntegerProperty();
@@ -23,8 +23,8 @@ public class Item {
         this.estado = new SimpleStringProperty();
         this.fechaAdquisicion = new SimpleObjectProperty<>();
         this.precio = new SimpleDoubleProperty();
-        this.idColeccion = new SimpleIntegerProperty(); // Inicialización
-        this.etiquetas = FXCollections.observableArrayList(); // Inicialización de etiquetas
+        this.idColeccion = new SimpleIntegerProperty();
+
     }
 
     // Getters y setters para idItem
@@ -40,7 +40,7 @@ public class Item {
         return idItem;
     }
 
-    // Getters y setters para nombre
+
     public String getNombre() {
         return nombre.get();
     }
@@ -53,7 +53,7 @@ public class Item {
         return nombre;
     }
 
-    // Getters y setters para descripcion
+
     public String getDescripcion() {
         return descripcion.get();
     }
@@ -66,7 +66,7 @@ public class Item {
         return descripcion;
     }
 
-    // Getters y setters para estado
+
     public String getEstado() {
         return estado.get();
     }
@@ -79,7 +79,7 @@ public class Item {
         return estado;
     }
 
-    // Getters y setters para fechaAdquisicion
+
     public LocalDate getFechaAdquisicion() {
         return fechaAdquisicion.get();
     }
@@ -92,7 +92,7 @@ public class Item {
         return fechaAdquisicion;
     }
 
-    // Getters y setters para precio
+
     public double getPrecio() {
         return precio.get();
     }
@@ -105,7 +105,7 @@ public class Item {
         return precio;
     }
 
-    // Getters y setters para idColeccion
+
     public int getIdColeccion() {
         return idColeccion.get();
     }
@@ -118,20 +118,5 @@ public class Item {
         return idColeccion;
     }
 
-    // Getters y setters para etiquetas
-    public ObservableList<Etiqueta> getEtiquetas() {
-        return etiquetas;
-    }
 
-    public void setEtiquetas(ObservableList<Etiqueta> etiquetas) {
-        this.etiquetas = etiquetas;
-    }
-
-    public void addEtiqueta(Etiqueta etiqueta) {
-        this.etiquetas.add(etiqueta);
-    }
-
-    public void removeEtiqueta(Etiqueta etiqueta) {
-        this.etiquetas.remove(etiqueta);
-    }
 }

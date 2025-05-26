@@ -94,7 +94,7 @@ public class MainController {
 
 
         coleccionesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
-            coleccionSeleccionada = newSelection; // Actualiza la colección seleccionada
+            coleccionSeleccionada = newSelection;
             if (newSelection != null) {
                 cargarItems(newSelection);
             }
