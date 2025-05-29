@@ -183,6 +183,7 @@ public class MainController {
                 nueva.setCategoria(categoriaField.getText());
                 nueva.setDescripcion(descripcionArea.getText());
                 nueva.setUsuario(usuario);
+                nueva.setIdUsuario(usuario.getIdUsuario()); // <-- AÑADE ESTA LÍNEA
                 return nueva;
             }
             return null;

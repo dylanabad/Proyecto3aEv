@@ -17,7 +17,7 @@ public class Coleccion {
         this.nombre = new SimpleStringProperty();
         this.descripcion = new SimpleStringProperty();
         this.categoria = new SimpleStringProperty();
-        this.idUsuario = new SimpleIntegerProperty(); // Inicialización de idUsuario
+        this.idUsuario = new SimpleIntegerProperty(usuario != null ? usuario.getIdUsuario() : 0);
     }
 
     public Coleccion(Integer idColeccion, String nombre, String descripcion, String categoria, Usuario usuario) {
@@ -79,8 +79,10 @@ public class Coleccion {
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
+        if (usuario != null) {
+            this.idUsuario.set(usuario.getIdUsuario());
+        }
     }
-
     public List<Item> getItems() {
         return items;
     }
