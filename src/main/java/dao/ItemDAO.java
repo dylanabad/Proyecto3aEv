@@ -14,11 +14,6 @@ public class ItemDAO {
     private final static String SQL_UPDATE = "UPDATE Item SET nombre = ?, descripcion = ?, estado = ?, fecha_adquisicion = ?, precio = ?, id_coleccion = ? WHERE id_item = ?";
     private final static String SQL_DELETE = "DELETE FROM Item WHERE id_item = ?";
 
-    /**
-     * Obtiene una lista de items que pertenecen a una colección específica.
-     * @param idColeccion Identificador de la colección.
-     * @return Lista de objetos Item asociados a la colección.
-     */
     public List<Item> findByColeccionId(int idColeccion) {
         List<Item> items = new ArrayList<>();
         try (Connection con = ConnectionBD.getConnection();
@@ -31,7 +26,7 @@ public class ItemDAO {
                 item.setNombre(rs.getString("nombre"));
                 item.setDescripcion(rs.getString("descripcion"));
                 item.setEstado(rs.getString("estado"));
-                item.setFechaAdquisicion(rs.getDate("fecha_adquisicion").toLocalDate());
+                item.setFechaAdquisicion(rs.getDate("fecha_adquisicion").toLocalDate()); // Conversión correcta
                 item.setPrecio(rs.getDouble("precio"));
                 item.setIdColeccion(rs.getInt("id_coleccion"));
                 items.add(item);
@@ -42,17 +37,13 @@ public class ItemDAO {
         return items;
     }
 
-    /**
-     * Inserta un nuevo item en la base de datos y actualiza su ID generado.
-     * @param item Objeto Item a insertar.
-     */
     public void save(Item item) {
         try (Connection con = ConnectionBD.getConnection();
              PreparedStatement pst = con.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
             pst.setString(1, item.getNombre());
             pst.setString(2, item.getDescripcion());
             pst.setString(3, item.getEstado());
-            pst.setDate(4, Date.valueOf(item.getFechaAdquisicion()));
+            pst.setDate(4, java.sql.Date.valueOf(item.getFechaAdquisicion())); // Conversión correcta
             pst.setDouble(5, item.getPrecio());
             pst.setInt(6, item.getIdColeccion());
             pst.executeUpdate();
@@ -65,17 +56,13 @@ public class ItemDAO {
         }
     }
 
-    /**
-     * Actualiza un item existente en la base de datos con los datos proporcionados.
-     * @param item Objeto Item con datos actualizados.
-     */
     public void update(Item item) {
         try (Connection con = ConnectionBD.getConnection();
              PreparedStatement pst = con.prepareStatement(SQL_UPDATE)) {
             pst.setString(1, item.getNombre());
             pst.setString(2, item.getDescripcion());
             pst.setString(3, item.getEstado());
-            pst.setDate(4, Date.valueOf(item.getFechaAdquisicion()));
+            pst.setDate(4, java.sql.Date.valueOf(item.getFechaAdquisicion())); // Conversión correcta
             pst.setDouble(5, item.getPrecio());
             pst.setInt(6, item.getIdColeccion());
             pst.setInt(7, item.getIdItem());
@@ -85,10 +72,6 @@ public class ItemDAO {
         }
     }
 
-    /**
-     * Elimina un item de la base de datos según su ID.
-     * @param idItem Identificador del item a eliminar.
-     */
     public void delete(int idItem) {
         try (Connection con = ConnectionBD.getConnection();
              PreparedStatement pst = con.prepareStatement(SQL_DELETE)) {

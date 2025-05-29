@@ -1,45 +1,36 @@
 package model;
 
 import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-
 import java.time.LocalDate;
+import java.util.List;
 
 public class Item {
-    private IntegerProperty idItem;
-    private StringProperty nombre;
-    private StringProperty descripcion;
-    private StringProperty estado;
+    private Integer idItem;
+    private SimpleStringProperty nombre;
+    private SimpleStringProperty descripcion;
+    private SimpleStringProperty estado;
     private ObjectProperty<LocalDate> fechaAdquisicion;
-    private DoubleProperty precio;
-    private IntegerProperty idColeccion; // Nueva propiedad
-
+    private SimpleDoubleProperty precio;
+    private Coleccion coleccion;
+    private List<Etiqueta> etiquetas;
+    private SimpleIntegerProperty idColeccion; // Propiedad observable para idColeccion
 
     public Item() {
-        this.idItem = new SimpleIntegerProperty();
         this.nombre = new SimpleStringProperty();
         this.descripcion = new SimpleStringProperty();
         this.estado = new SimpleStringProperty();
         this.fechaAdquisicion = new SimpleObjectProperty<>();
         this.precio = new SimpleDoubleProperty();
-        this.idColeccion = new SimpleIntegerProperty();
-
+        this.idColeccion = new SimpleIntegerProperty(); // Inicialización de idColeccion
     }
 
-    // Getters y setters para idItem
-    public int getIdItem() {
-        return idItem.get();
-    }
-
-    public void setIdItem(int idItem) {
-        this.idItem.set(idItem);
-    }
-
-    public IntegerProperty idItemProperty() {
+    public Integer getIdItem() {
         return idItem;
     }
 
+    public void setIdItem(Integer idItem) {
+        this.idItem = idItem;
+    }
 
     public String getNombre() {
         return nombre.get();
@@ -49,10 +40,9 @@ public class Item {
         this.nombre.set(nombre);
     }
 
-    public StringProperty nombreProperty() {
+    public SimpleStringProperty nombreProperty() {
         return nombre;
     }
-
 
     public String getDescripcion() {
         return descripcion.get();
@@ -62,10 +52,9 @@ public class Item {
         this.descripcion.set(descripcion);
     }
 
-    public StringProperty descripcionProperty() {
+    public SimpleStringProperty descripcionProperty() {
         return descripcion;
     }
-
 
     public String getEstado() {
         return estado.get();
@@ -75,10 +64,9 @@ public class Item {
         this.estado.set(estado);
     }
 
-    public StringProperty estadoProperty() {
+    public SimpleStringProperty estadoProperty() {
         return estado;
     }
-
 
     public LocalDate getFechaAdquisicion() {
         return fechaAdquisicion.get();
@@ -92,19 +80,33 @@ public class Item {
         return fechaAdquisicion;
     }
 
-
-    public double getPrecio() {
+    public Double getPrecio() {
         return precio.get();
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(Double precio) {
         this.precio.set(precio);
     }
 
-    public DoubleProperty precioProperty() {
+    public SimpleDoubleProperty precioProperty() {
         return precio;
     }
 
+    public Coleccion getColeccion() {
+        return coleccion;
+    }
+
+    public void setColeccion(Coleccion coleccion) {
+        this.coleccion = coleccion;
+    }
+
+    public List<Etiqueta> getEtiquetas() {
+        return etiquetas;
+    }
+
+    public void setEtiquetas(List<Etiqueta> etiquetas) {
+        this.etiquetas = etiquetas;
+    }
 
     public int getIdColeccion() {
         return idColeccion.get();
@@ -114,9 +116,7 @@ public class Item {
         this.idColeccion.set(idColeccion);
     }
 
-    public IntegerProperty idColeccionProperty() {
+    public SimpleIntegerProperty idColeccionProperty() {
         return idColeccion;
     }
-
-
 }

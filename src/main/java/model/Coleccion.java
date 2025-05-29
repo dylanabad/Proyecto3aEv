@@ -1,70 +1,76 @@
 package model;
 
 import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+import java.util.List;
 
 public class Coleccion {
-    private int idColeccion;
-    private String nombre;
-    private String descripcion;
-    private String categoria;
-    private Usuario usuario;
+    private Integer idColeccion;
+    private SimpleStringProperty nombre;
+    private SimpleStringProperty descripcion;
+    private SimpleStringProperty categoria;
+    private Usuario usuario; // Relación con Usuario
+    private List<Item> items; // Relación con Item
+    private SimpleIntegerProperty idUsuario; // Propiedad observable para idUsuario
 
-    // Propiedades adicionales para compatibilidad con TableView
-    private final StringProperty nombreProperty = new SimpleStringProperty();
-    private final StringProperty categoriaProperty = new SimpleStringProperty();
-    private final StringProperty descripcionProperty = new SimpleStringProperty();
-
-    // Constructor vacío
-    public Coleccion() {}
-
-    public Coleccion(int idColeccion, String nombre, String descripcion, String categoria, Usuario usuario) {
-        this.idColeccion = idColeccion;
-        this.nombre = nombre;
-        this.descripcion = descripcion;
-        this.categoria = categoria;
-        this.usuario = usuario;
-
-        // Inicializar propiedades
-        this.nombreProperty.set(nombre);
-        this.categoriaProperty.set(categoria);
-        this.descripcionProperty.set(descripcion);
+    public Coleccion() {
+        this.nombre = new SimpleStringProperty();
+        this.descripcion = new SimpleStringProperty();
+        this.categoria = new SimpleStringProperty();
+        this.idUsuario = new SimpleIntegerProperty(); // Inicialización de idUsuario
     }
 
-    // Getters y setters existentes
-    public int getIdColeccion() {
+    public Coleccion(Integer idColeccion, String nombre, String descripcion, String categoria, Usuario usuario) {
+        this.idColeccion = idColeccion;
+        this.nombre = new SimpleStringProperty(nombre);
+        this.descripcion = new SimpleStringProperty(descripcion);
+        this.categoria = new SimpleStringProperty(categoria);
+        this.usuario = usuario;
+        this.idUsuario = new SimpleIntegerProperty(usuario != null ? usuario.getIdUsuario() : null); // Asignación condicional
+    }
+
+    public Integer getIdColeccion() {
         return idColeccion;
     }
 
-    public void setIdColeccion(int idColeccion) {
+    public void setIdColeccion(Integer idColeccion) {
         this.idColeccion = idColeccion;
     }
 
     public String getNombre() {
-        return nombre;
+        return nombre.get();
     }
 
     public void setNombre(String nombre) {
-        this.nombre = nombre;
-        this.nombreProperty.set(nombre); // Sincronizar propiedad
+        this.nombre.set(nombre);
+    }
+
+    public SimpleStringProperty nombreProperty() {
+        return nombre;
     }
 
     public String getDescripcion() {
-        return descripcion;
+        return descripcion.get();
     }
 
     public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-        this.descripcionProperty.set(descripcion); // Sincronizar propiedad
+        this.descripcion.set(descripcion);
+    }
+
+    public SimpleStringProperty descripcionProperty() {
+        return descripcion;
     }
 
     public String getCategoria() {
-        return categoria;
+        return categoria.get();
     }
 
     public void setCategoria(String categoria) {
-        this.categoria = categoria;
-        this.categoriaProperty.set(categoria); // Sincronizar propiedad
+        this.categoria.set(categoria);
+    }
+
+    public SimpleStringProperty categoriaProperty() {
+        return categoria;
     }
 
     public Usuario getUsuario() {
@@ -75,32 +81,23 @@ public class Coleccion {
         this.usuario = usuario;
     }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Item> items) {
+        this.items = items;
+    }
+
     public int getIdUsuario() {
-        if (usuario != null) {
-            return usuario.getIdUsuario();
-        }
-        return 0; // O manejar el caso donde usuario es null
+        return idUsuario.get();
     }
 
     public void setIdUsuario(int idUsuario) {
-        if (usuario != null) {
-            usuario.setIdUsuario(idUsuario);
-        } else {
-            usuario = new Usuario();
-            usuario.setIdUsuario(idUsuario);
-        }
+        this.idUsuario.set(idUsuario);
     }
 
-    // Métodos para TableView
-    public StringProperty nombreProperty() {
-        return nombreProperty;
-    }
-
-    public StringProperty categoriaProperty() {
-        return categoriaProperty;
-    }
-
-    public StringProperty descripcionProperty() {
-        return descripcionProperty;
+    public SimpleIntegerProperty idUsuarioProperty() {
+        return idUsuario;
     }
 }

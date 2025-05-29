@@ -1,27 +1,28 @@
 package model;
 
+import java.util.List;
+
 public class Usuario {
-    private int idUsuario;
+    private Integer idUsuario;
     private String nombre;
     private String email;
     private String contrasena;
+    private List<Coleccion> colecciones; // Relación con Coleccion
 
-
-    // Constructor vacío
     public Usuario() {}
 
-    public Usuario(int idUsuario, String nombre, String email, String contrasena) {
+    public Usuario(Integer idUsuario, String nombre, String email, String contrasena) {
         this.idUsuario = idUsuario;
         this.nombre = nombre;
         this.email = email;
         this.contrasena = contrasena;
     }
 
-    public int getIdUsuario() {
+    public Integer getIdUsuario() {
         return idUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Integer idUsuario) {
         this.idUsuario = idUsuario;
     }
 
@@ -49,6 +50,11 @@ public class Usuario {
         this.contrasena = contrasena;
     }
 
+    public List<Coleccion> getColecciones() {
+        return colecciones;
+    }
 
+    public void setColecciones(List<Coleccion> colecciones) {
+        this.colecciones = colecciones;
+    }
 }
-

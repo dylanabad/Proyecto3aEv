@@ -1,11 +1,9 @@
-// Controlador principal que maneja las acciones de la interfaz principal.
-// Permite agregar, editar y eliminar colecciones, además de cargar los datos en la tabla.
-
 package controller;
 
 import dao.ColeccionDAO;
 import dao.EtiquetaDAO;
 import dao.ItemDAO;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -19,6 +17,7 @@ import javafx.scene.layout.GridPane;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +54,7 @@ public class MainController {
     @FXML
     private Usuario usuario;
     private ColeccionDAO coleccionDAO = new ColeccionDAO();
-    private ItemDAO itemDAO = new ItemDAO(); // Declaración de itemDAO
+    private ItemDAO itemDAO = new ItemDAO();
 
     private ObservableList<Item> items = FXCollections.observableArrayList();
     private ObservableList<Etiqueta> etiquetasDelItem = FXCollections.observableArrayList();
@@ -66,7 +65,6 @@ public class MainController {
         this.usuarioActivo = usuario;
     }
 
-    // Métodos para establecer el usuario
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
         this.usuarioActivo = usuario;
@@ -81,17 +79,18 @@ public class MainController {
         descripcionCol.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
     }
 
-
-    // Inicialización del controlador
     @FXML
     private void initialize() {
         nombreItemCol.setCellValueFactory(cellData -> cellData.getValue().nombreProperty());
         descripcionItemCol.setCellValueFactory(cellData -> cellData.getValue().descripcionProperty());
         estadoColumn.setCellValueFactory(cellData -> cellData.getValue().estadoProperty());
-        fechaAdquisicionColumn.setCellValueFactory(cellData -> cellData.getValue().fechaAdquisicionProperty());
+        fechaAdquisicionColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(
+                () -> cellData.getValue().getFechaAdquisicion(),
+                cellData.getValue().fechaAdquisicionProperty()));
         precioColumn.setCellValueFactory(cellData -> cellData.getValue().precioProperty().asObject());
-        idColeccionColumn.setCellValueFactory(cellData -> cellData.getValue().idColeccionProperty().asObject());
-
+        idColeccionColumn.setCellValueFactory(cellData -> Bindings.createObjectBinding(
+                () -> cellData.getValue().getIdColeccion(),
+                cellData.getValue().idColeccionProperty()));
 
         coleccionesTable.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
             coleccionSeleccionada = newSelection;
@@ -101,14 +100,12 @@ public class MainController {
         });
     }
 
-    // Carga los ítems de la colección seleccionada
     private void cargarItems(Coleccion coleccion) {
         items.clear();
         items.addAll(itemDAO.findByColeccionId(coleccion.getIdColeccion()));
         itemsTable.setItems(items);
     }
 
-    // Manejar acción de agregar ítem
     @FXML
     private void handleAddItem() {
         Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
@@ -134,7 +131,6 @@ public class MainController {
         }
     }
 
-    // Manejar acción de editar ítem
     @FXML
     private void handleEditItem() {
         Item itemSeleccionado = itemsTable.getSelectionModel().getSelectedItem();
@@ -146,7 +142,7 @@ public class MainController {
             }
         }
     }
-    // Manejar acción de eliminar ítem
+
     @FXML
     private void handleDeleteItem() {
         Item itemSeleccionado = itemsTable.getSelectionModel().getSelectedItem();
@@ -156,7 +152,6 @@ public class MainController {
         }
     }
 
-    // Manejar acción de agregar colección
     @FXML
     private void handleAddColeccion() {
         Dialog<Coleccion> dialog = new Dialog<>();
@@ -201,8 +196,6 @@ public class MainController {
         });
     }
 
-
-    //Manejar acción de editar colección
     @FXML
     private void handleEditColeccion() {
         Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
@@ -231,7 +224,6 @@ public class MainController {
         }
     }
 
-    // Manejar acción de eliminar colección
     @FXML
     private void handleDeleteColeccion() {
         Coleccion coleccionSeleccionada = coleccionesTable.getSelectionModel().getSelectedItem();
@@ -243,15 +235,12 @@ public class MainController {
         }
     }
 
-    //Recarga la tabla de colecciones del usuario
     private void cargarColecciones() {
         List<Coleccion> lista = coleccionDAO.findByUsuarioId(usuario.getIdUsuario());
         ObservableList<Coleccion> colecciones = FXCollections.observableArrayList(lista);
         coleccionesTable.setItems(colecciones);
-
     }
 
-    //Muestra el diálogo para editar o agregar una colección
     public Coleccion mostrarDialogoColeccion(Coleccion coleccion) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/coleccionDialog.fxml"));
@@ -265,7 +254,7 @@ public class MainController {
             dialog.setTitle("Editar Colección");
 
             Optional<ButtonType> result = dialog.showAndWait();
-            if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE)  {
+            if (result.isPresent() && result.get().getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                 return controller.getColeccion();
             }
         } catch (IOException e) {
@@ -274,7 +263,6 @@ public class MainController {
         return null;
     }
 
-    //Myestra una alerta de advertencia al usuario
     private void mostrarAlerta(String mensaje) {
         Alert alerta = new Alert(Alert.AlertType.WARNING);
         alerta.setTitle("Advertencia");
@@ -291,7 +279,6 @@ public class MainController {
         alert.showAndWait();
     }
 
-    //Muestra el diálogo para editar o agregar un ítem
     private Item mostrarDialogoItem(Item item) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/proyecto3aev/itemDialog.fxml"));
@@ -306,7 +293,6 @@ public class MainController {
 
             ButtonType result = dialog.showAndWait().orElse(ButtonType.CANCEL);
 
-            // Cambia la comparación:
             if (result.getButtonData() == ButtonBar.ButtonData.OK_DONE) {
                 return controller.getItem();
             }
@@ -315,6 +301,7 @@ public class MainController {
         }
         return null;
     }
+
     public void handleAddEtiquetaToItem() {
         Item selectedItem = itemsTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
@@ -340,6 +327,4 @@ public class MainController {
             }
         });
     }
-
-
 }
